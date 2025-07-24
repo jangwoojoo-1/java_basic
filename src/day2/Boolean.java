@@ -21,6 +21,6 @@ public class Boolean {
         System.out.println(result2);
         System.out.println(result3);
         System.out.println(result4);
-
+ //자동정렬 법: ctrl + alt = L
     }
 }
