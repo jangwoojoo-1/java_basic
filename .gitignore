@@ -23,8 +23,6 @@ bin/
 /.nb-gradle/
 /.idea/
 java_basic.iml
-ex01.java
-ex02.java
 
 ### VS Code ###
 .vscode/

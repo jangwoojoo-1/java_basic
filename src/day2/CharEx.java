@@ -13,6 +13,9 @@ public class CharEx {
         char c5 = 44032; //'가'의 유니코드 값
         System.out.println(c4);
         System.out.println(c5);
+
+        String v1 = "A";
+//        public final class 최종 클래스, 변경불가 -> String
     }
     // 0~9 ASCII 상 48~57 / a~z ASCII 상 97~122
 }
