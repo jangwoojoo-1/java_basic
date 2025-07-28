@@ -1,0 +1,18 @@
+제어문 =>  조건문, 반복문
+
+자바 - main메소드가 시작점
+        위에서 아래로 실행
+        개발자가 원하는 방향으로 바꿀 수 있도록 해주는 것이 제어문
+
+1-2. 조건문(if, else if, switch)
+if문은 조건식의 결과가 true, false 두가지 밖에 없어서 경우의 수가 많아지면
+else if() 반복적으로 추가되어야 해서 코드가 복잡해진다.
+
+switch()문을 사용하여 변수의 값에 따라 실행문이 결정되므로 코드가 간결해진다.
+break; 없을 시 하위 케이스 다 출력
+예외 사항은 default로 처리
+switch의 매개변수는 byte, short, char, int, long, String 타입이 들어갈 수 있음
+
+1-3. 반복문(do-while, for, while)
+
+
