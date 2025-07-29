@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class Welcome {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        
         //이름 전화번호 입력
         System.out.print("당신의 이름을 입력하세요 : ");
         String userName = sc.nextLine();
@@ -28,7 +29,7 @@ public class Welcome {
         String menu8 = "8. 종료";
 
 
-        // 메뉴 만들기
+        // 메뉴판 만들기
         while (menu_num != 8){
             System.out.printf("%s\n", divLine);
             System.out.printf("        %s\n", welcomeMent1);
