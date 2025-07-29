@@ -35,10 +35,10 @@ public class Welcome {
             System.out.printf("        %s\n", welcomeMent1);
             System.out.printf("        %s\n", welcomeMent2);
             System.out.printf("%s\n", divLine);
-            System.out.printf(" %-20s%s \n", menu1, menu4);
-            System.out.printf(" %s   %s \n", menu2, menu5);
-            System.out.printf(" %-20s%s \n", menu3, menu6);
-            System.out.printf(" %-20s%s \n", menu7, menu8);
+            System.out.printf(" %-20s\t%s \n", menu1, menu4);
+            System.out.printf(" %s \t%s \n", menu2, menu5);
+            System.out.printf(" %-20s\t%s \n", menu3, menu6);
+            System.out.printf(" %-20s\t%s \n", menu7, menu8);
             System.out.printf("%s\n", divLine);
 
             System.out.print("메뉴 번호를 선택해주세요 ");
