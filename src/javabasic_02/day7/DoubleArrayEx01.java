@@ -18,6 +18,8 @@ public class DoubleArrayEx01 {
 
         System.out.println(studentScores[1][0] + " " + studentScores[1][1] + " " + studentScores[1][2]);
 
+        System.out.println("=============================");
+
         studentScores[2][0] = 70;
         studentScores[2][1] = 90;
         studentScores[2][2] = 90;
