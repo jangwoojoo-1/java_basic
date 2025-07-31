@@ -16,7 +16,14 @@ public class JavaBasic9 {
             System.out.println("1.학생수 | 2.점수입력 | 3.점수리스트 | 4.분석 | 5.종료");
             System.out.println("--------------------------------------------------");
             System.out.print("선택> ");
-            char n = sc.nextLine().charAt(0);
+            String input = sc.nextLine();
+
+            if (input.length() != 1 || input.charAt(0) < '1' || input.charAt(0) > '4') {
+                System.out.println("1~4 중 하나의 숫자로 입력해주세요.");
+                continue;
+            }
+
+            char n = input.charAt(0);
 
             switch (n){
                 case '1':
@@ -25,10 +32,10 @@ public class JavaBasic9 {
                     break;
                 case '2':
                     for (int i = 0 ; i < count ; i++){
-                        System.out.printf("scores[%d]: ", i);
+                        System.out.printf("scores[%d]> ", i);
                         int num = Integer.parseInt(sc.nextLine());
                         while(num < 0 || num > 100){
-                            System.out.printf("scores[%d]: ", i);
+                            System.out.printf("scores[%d]> ", i);
                             num = Integer.parseInt(sc.nextLine());
                         }
                         scores[i] = num;
@@ -58,6 +65,7 @@ public class JavaBasic9 {
                     tf = false;
                     break;
                 default:
+                    System.out.println("숫자를 잘못 입력했습니다.");
             }
         }
     }
