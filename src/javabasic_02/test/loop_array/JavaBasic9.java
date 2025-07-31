@@ -8,7 +8,7 @@ public class JavaBasic9 {
 
     public static void main(String[] args) {
         boolean tf = true;
-        Integer[] scores = new Integer[30];
+        Integer[] scores = null;
         int count = 0;
 
         while(tf){
@@ -18,8 +18,8 @@ public class JavaBasic9 {
             System.out.print("선택> ");
             String input = sc.nextLine();
 
-            if (input.length() != 1 || input.charAt(0) < '1' || input.charAt(0) > '4') {
-                System.out.println("1~4 중 하나의 숫자로 입력해주세요.");
+            if (input.length() != 1 || input.charAt(0) < '1' || input.charAt(0) > '5') {
+                System.out.println("1~5 중 하나의 숫자로 입력해주세요.");
                 continue;
             }
 

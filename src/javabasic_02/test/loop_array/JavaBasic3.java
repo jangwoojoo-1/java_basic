@@ -20,6 +20,6 @@ public class JavaBasic3 {
                 }
             }
         }
-        System.out.println("숫자의 합이 5가 되는 경우의 수 : " + count);
+        System.out.printf("숫자의 합이 5가 되는 경우의 수 : %d 확률: %.2f", count, (double)count/36);
     }
 }
