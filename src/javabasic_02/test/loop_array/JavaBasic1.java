@@ -4,18 +4,15 @@ public class JavaBasic1 {
     public static void main(String[] args) {
         String grade = "B";
 
-        int score1 = 0;
-        switch (grade){
-            case "A" -> {
-                score1 = 100;
-                break;
-            }
+        int score1 = switch (grade){
+            case "A" -> 100;
             case "B" -> {
                 int result = 100 - 20;
-                score1 = result;
-                break;
+                yield result;
             }
-            default -> score1 = 60;
-        }
+            default -> 60;
+        };
+
+        System.out.println("Score: " + score1);
     }
 }

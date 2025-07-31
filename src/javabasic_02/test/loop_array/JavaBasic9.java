@@ -29,6 +29,7 @@ public class JavaBasic9 {
                 case '1':
                     System.out.print("학생수> ");
                     count = Integer.parseInt(sc.nextLine());
+                    scores = new Integer[count];
                     break;
                 case '2':
                     for (int i = 0 ; i < count ; i++){
