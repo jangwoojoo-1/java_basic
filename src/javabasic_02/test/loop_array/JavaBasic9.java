@@ -35,16 +35,13 @@ public class JavaBasic9 {
                     }
                     break;
                 case '4':
-                    for(int i = 0 ; i < count - 2 ; i++){
-                        for (int j = 0 ; j < count-1 ; j++){
-                            if(scores[j] < scores[j+1]){
-                                int temp = scores[j];
-                                scores[j] = scores[j+1];
-                                scores[j+1] = scores[j];
-                            }
+                    int max = 0;
+                    for(int i = 0 ; i < count ; i++){
+                        if(max < scores[i]){
+                            max = scores[i];
                         }
                     }
-                    System.out.println("최고 점수: " + scores[0]);
+                    System.out.println("최고 점수: " + max);
                     int total = 0;
                     for(int i = 0 ; i < count ; i++){
                         total += scores[i];
@@ -52,6 +49,7 @@ public class JavaBasic9 {
                     System.out.printf("평균 점수: %.1f\n", (double)total/count);
                     break;
                 case '5':
+                    System.out.println("프로그램 종료");
                     tf = false;
                     break;
                 default:
