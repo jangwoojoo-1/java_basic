@@ -1,5 +1,3 @@
-package javabasic_01.day5;
-
 import java.util.Scanner;
 
 public class Welcome {
@@ -76,3 +74,5 @@ public class Welcome {
         }
     }
 }
+
+
