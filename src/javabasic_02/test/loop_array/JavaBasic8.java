@@ -27,8 +27,12 @@ public class JavaBasic8 {
                 case '2':
                     System.out.print("출금액>");
                     int outputMoney = Integer.parseInt(sc.nextLine());
-                    money -= outputMoney;
-                    System.out.println();
+                    if(money < outputMoney){
+                        System.out.println("잔고가 부족합니다.");
+                    } else {
+                        money -= outputMoney;
+                        System.out.println();
+                    }
                     break;
                 case '3':
                     System.out.printf("잔고>%d\n\n", money);

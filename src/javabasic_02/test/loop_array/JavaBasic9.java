@@ -26,7 +26,12 @@ public class JavaBasic9 {
                 case '2':
                     for (int i = 0 ; i < count ; i++){
                         System.out.printf("scores[%d]: ", i);
-                        scores[i] = Integer.parseInt(sc.nextLine());
+                        int num = Integer.parseInt(sc.nextLine());
+                        while(num < 0 || num > 100){
+                            System.out.printf("scores[%d]: ", i);
+                            num = Integer.parseInt(sc.nextLine());
+                        }
+                        scores[i] = num;
                     }
                     break;
                 case '3':
