@@ -32,7 +32,10 @@ public class Student {
     Student(int[] scores){
         this.scores = scores;
     }
-
+    
+    
+    
+    //값 접근 함수들
     public String getStu_name() {
         return stu_name;
     }
@@ -56,10 +59,34 @@ public class Student {
     public String getScores(){
         return Arrays.toString(scores);
     }
+    
+
+    
+    //값 설정 함수들
+    public void setStu_name(String stu_name) {
+        this.stu_name = stu_name;
+    }
+
+    public void setStu_age(Integer stu_age) {
+        this.stu_age = stu_age;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setStu_ssun(String stu_ssun) {
+        this.stu_ssun = stu_ssun;
+    }
+
+    public void setScores(int[] scores) {
+        this.scores = scores;
+    }
 
     public void setGender(String gender) {
         this.gender = gender;
     }
+    
 
     //Object 클래스의 toString()
     @Override // alt + insert 누른 후 toString 눌러서 OK 함.
@@ -73,7 +100,9 @@ public class Student {
                 ", scores=" + Arrays.toString(scores) +
                 '}';
     }
-
+    
+    
+    //총점 평균 계산 함수
     public void calculateScores(){
         System.out.println("===================");
         System.out.println(stu_name);
