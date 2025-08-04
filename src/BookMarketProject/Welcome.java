@@ -5,9 +5,10 @@ import java.util.Scanner;
 public class Welcome {
     static final int NUM_BOOK = 3;
     static final int NUM_ITEM = 7;
+    public static Scanner sc = new Scanner(System.in);
+    public static boolean loop = true;
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
         String[][] mBook = new String[NUM_BOOK][NUM_ITEM];
 
         //이름 전화번호 입력
@@ -16,11 +17,8 @@ public class Welcome {
         System.out.print("연락처를 입력하세요 : ");
         String userMobile = sc.nextLine();
 
-        //메뉴 번호 구별 변수
-        int menu_num = 0;
-
         // 메뉴판 만들기
-        while (menu_num != 8){
+        while (loop){
             String divLine = "*******************************************************";
             String welcomeMent1 = "Welcome to Shopping Mall";
             String welcomeMent2 = "Welcome to Book Market";
@@ -32,7 +30,8 @@ public class Welcome {
             menuIntroduction();
 
             System.out.print("메뉴 번호를 선택해주세요 ");
-            menu_num = sc.nextInt();
+            int menu_num = sc.nextInt();
+            sc.nextLine();
 
             switch(menu_num){
                 case 1:
@@ -40,7 +39,7 @@ public class Welcome {
                     break;
                 case 2:
                    // System.out.println("장바구니 상품 목록 : ");
-                    //menuCartItemList();
+                    menuCartItemList();
                     break;
                 case 3:
                    // System.out.println("장바구니 상품 목록 : ");
@@ -48,7 +47,7 @@ public class Welcome {
                     break;
                 case 4:
                     //System.out.println("장바구니 항목 추가: ");
-                    menuCartAddItem();
+                    menuCartAddItem(mBook);
                     break;
                 case 5:
                     //System.out.println("장바구니 항목 : ");
@@ -67,7 +66,7 @@ public class Welcome {
                     menuExit();
                     break;
                 default:
-                    System.out.println("번호를 잘못 입력했습니다.");
+                    System.out.println("1부터 8까지의 숫자를 입력하세요.");
             }
         }
     }
@@ -97,7 +96,7 @@ public class Welcome {
         System.out.println("이름 " + name + "  연락처 " + phone);
     }
 
-    public static void menuCartItemList(String[][] book){
+    public static void menuCartItemList(){
         System.out.println("2. 장바구니 상품 목록 보기");
     }
 
@@ -105,8 +104,46 @@ public class Welcome {
         System.out.println("3. 장바구니 비우기");
     }
 
-    public static void menuCartAddItem(){
+    public static void menuCartAddItem(String[][] book){
         System.out.println("4. 장바구니에 항목 추가하기");
+        BookList(book);
+        for(int i = 0 ; i < NUM_BOOK ; i++){
+            for(int j = 0 ; j < NUM_ITEM ; j++)
+                System.out.print(book[i][j] + " | ");
+            System.out.println("");
+        }
+
+        boolean loop = true;
+
+        while(loop){
+            System.out.print("장바구니에 추가할 도서의 ID를 입력하세요 : ");
+
+            String str = sc.nextLine();
+
+            boolean flag = false;
+            int numId = -1;
+
+            for(int i = 0 ; i < NUM_BOOK ; i++){
+                if(str.equals(book[i][0])){
+                    numId = i;
+                    flag = true;
+                    break;
+                }
+            }
+
+            if(flag){
+                System.out.println("장바구니에 추가하겠습니까? Y | N ");
+                str = sc.nextLine();
+
+                if(str.toUpperCase().equals("Y")){
+                    System.out.println(book[numId][0] + "도서가 장바구니에 입력되었습니다.");
+                }
+
+                loop = false;
+            } else {
+                System.out.println("다시 입력해주세요.");
+            }
+        }
     }
 
     public static void menuCartRemoveItemCount(){
@@ -123,10 +160,33 @@ public class Welcome {
     
     public static void menuExit(){
         System.out.println("8. 프로그램 종료");
+        loop = false;
     }
 
     public static void BookList(String[][] book){
         //도서 정보 저장
+        book[0][0] = "ISBN9791170612759";
+        book[0][1] = "가공범";
+        book[0][2] = "22000";
+        book[0][3] = "히가시노 게이고";
+        book[0][4] = "히가시노 게이고 작가 데뷔 40주년!";
+        book[0][5] = "미스터리";
+        book[0][6] = "2025/07/21";
 
+        book[1][0] = "ISBN9788936439743";
+        book[1][1] = "혼모노";
+        book[1][2] = "18000";
+        book[1][3] = "성해나";
+        book[1][4] = "무엇이 진짜이고 무엇이 가짜인가. 그 경계에서 혼모노를 묻다.";
+        book[1][5] = "한국소설";
+        book[1][6] = "2025/03/28";
+
+        book[2][0] = "ISBN9791198754080";
+        book[2][1] = "다크심리학";
+        book[2][2] = "21900";
+        book[2][3] = "다크 사이드 프로젝트";
+        book[2][4] = "국내 최초 다크 심리학을 기반한 심리 기술";
+        book[2][5] = "심리학";
+        book[2][6] = "2025/07/31";
     }
 }
