@@ -2,65 +2,15 @@ package BookMarketProject;
 
 import java.util.Scanner;
 
-public class MenuPage {
-    private String userName;
-    private String userMobile;
+public class MenuOperation {
     private int menuNum;
     private boolean loop = true;
-    private static final int NUM_BOOK = 3;
-    private static final int NUM_ITEM = 7;
-    private String[][] book = new String[NUM_BOOK][NUM_ITEM];
 
     // 생성자
-    MenuPage(){
-        BookList();
-    }
-
-    public void BookList(){
-        //도서 정보 저장
-        book[0][0] = "ISBN9791170612759";
-        book[0][1] = "가공범";
-        book[0][2] = "22000";
-        book[0][3] = "히가시노 게이고";
-        book[0][4] = "히가시노 게이고 작가 데뷔 40주년!";
-        book[0][5] = "미스터리";
-        book[0][6] = "2025/07/21";
-
-        book[1][0] = "ISBN9788936439743";
-        book[1][1] = "혼모노";
-        book[1][2] = "18000";
-        book[1][3] = "성해나";
-        book[1][4] = "무엇이 진짜이고 무엇이 가짜인가. 그 경계에서 혼모노를 묻다.";
-        book[1][5] = "한국소설";
-        book[1][6] = "2025/03/28";
-
-        book[2][0] = "ISBN9791198754080";
-        book[2][1] = "다크심리학";
-        book[2][2] = "21900";
-        book[2][3] = "다크 사이드 프로젝트";
-        book[2][4] = "국내 최초 다크 심리학을 기반한 심리 기술";
-        book[2][5] = "심리학";
-        book[2][6] = "2025/07/31";
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public String getUserMobile() {
-        return userMobile;
-    }
+    MenuOperation(){}
 
     public int getMenuNum() {
         return menuNum;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public void setUserMobile(String userMobile) {
-        this.userMobile = userMobile;
     }
 
     public void setMenuNum(int menuNum) {
@@ -96,13 +46,13 @@ public class MenuPage {
         System.out.printf("%s\n", divLine);
     }
 
-    public void menuOperation(){
+    public void menuOp(User user, String[][] book, CartItem[] cart){
         switch(menuNum){
             case 1:
-                menuGustInfo();
+                menuGustInfo(user.getUserName(), user.getUserMobile());
                 break;
             case 2:
-                menuCartItemList();
+                menuCartItemList(cart);
                 break;
             case 3:
                 menuCartClear();
@@ -127,13 +77,23 @@ public class MenuPage {
         }
     }
 
-    public void menuGustInfo(){
+    public void menuGustInfo(String name, String phone){
         System.out.println("현재 고객 정보 : ");
-        System.out.println("이름 " + userName + "  연락처 " + userMobile);
+        System.out.println("이름 " + name + "  연락처 " + phone);
     }
 
-    public void menuCartItemList(){
-        System.out.println("2. 장바구니 상품 목록 보기");
+    public void menuCartItemList(CartItem[] cart){
+        int count = Welcome.mCartCount;
+        System.out.println("2. 장바구니 상품 목록 : ");
+        System.out.println("---------------------------------------");
+        System.out.println("    도서ID \t|     수량 \t|      합계");
+        for (int i = 0; i < count; i++) {
+            System.out.print("    " + cart[i].getBookID() + " \t| ");
+            System.out.print("    " + cart[i].getQuantity() + " \t| ");
+            System.out.print("    " + cart[i].getTotalPrice());
+            System.out.println("  ");
+        }
+        System.out.println("---------------------------------------");
     }
 
     public void menuCartClear(){
@@ -141,10 +101,12 @@ public class MenuPage {
     }
 
     public void menuCartAddItem(String[][] book){
+        int numBook = Welcome.NUM_BOOK;
+        int numItem = Welcome.NUM_ITEM;
         Scanner sc = new Scanner(System.in);
         System.out.println("4. 장바구니에 항목 추가하기");
-        for(int i = 0 ; i < NUM_BOOK ; i++){
-            for(int j = 0 ; j < NUM_ITEM ; j++)
+        for(int i = 0 ; i < numBook ; i++){
+            for(int j = 0 ; j < numItem ; j++)
                 System.out.print(book[i][j] + " | ");
             System.out.println("");
         }
@@ -159,7 +121,7 @@ public class MenuPage {
             boolean flag = false;
             int numId = -1;
 
-            for(int i = 0 ; i < NUM_BOOK ; i++){
+            for(int i = 0 ; i < numBook ; i++){
                 if(str.equals(book[i][0])){
                     numId = i;
                     flag = true;
