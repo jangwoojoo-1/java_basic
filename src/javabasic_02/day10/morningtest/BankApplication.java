@@ -113,7 +113,12 @@ public class BankApplication {
                 return;
             }
             System.out.print("예금액: ");
-            users[index].setBalance(users[index].getBalance() + Integer.parseInt(sc.nextLine()));
+            int money = Integer.parseInt(sc.nextLine());
+            if(money <= 0){
+                System.out.println("예금액이 음수입니다.");
+                return;
+            }
+            users[index].setBalance(users[index].getBalance() + money);
         }catch (InputMismatchException e){
             System.out.println("입력이 잘못되었습니다.");
         }
@@ -136,7 +141,12 @@ public class BankApplication {
                 return;
             }
             System.out.print("출금액: ");
-            users[index].setBalance(users[index].getBalance() - Integer.parseInt(sc.nextLine()));
+            int money = Integer.parseInt(sc.nextLine());
+            if(money > users[index].getBalance()){
+                System.out.println("출금액이 잔고를 초과합니다.");
+                return;
+            }
+            users[index].setBalance(users[index].getBalance() - money);
             System.out.println("결과: 출금이 성공되었습니다.");
         }catch (InputMismatchException e){
             System.out.println("입력이 잘못되었습니다.");
