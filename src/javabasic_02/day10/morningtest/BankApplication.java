@@ -58,12 +58,14 @@ public class BankApplication {
                 -----------
                 계좌생성
                 -----------""");
-        try{
+
             System.out.print("계좌번호: ");
             String accountNum = sc.nextLine();
             System.out.print("계좌주: ");
             String name = sc.nextLine();
             System.out.print("초기입금액: ");
+
+        try{
             int balance = Integer.parseInt(sc.nextLine());
 
             //입금액 음수인 경우 예외처리 필요
@@ -80,7 +82,7 @@ public class BankApplication {
             count++;
 
             System.out.println("결과: 계좌가 생성되었습니다.");
-        }catch (InputMismatchException e){
+        }catch (NumberFormatException e){
             System.out.println("결과: 입력이 잘못되었습니다.");
         }
     }
@@ -101,25 +103,25 @@ public class BankApplication {
                 -----------
                 예금
                 -----------""");
-        try{
-            int index = -1;
-            System.out.print("계좌번호: ");
-            String str1 = sc.nextLine();
-            for(int i = 0 ; i < count ; i++){
-                if(users[i].getAccountNum().equals(str1)) index = i;
-            }
-            if(index == -1){
-                System.out.println("계좌번호를 찾을 수 없습니다.");
-                return;
-            }
-            System.out.print("예금액: ");
+
+        System.out.print("계좌번호: ");
+        String str1 = sc.nextLine();
+        int index = findUserIndex(str1);
+
+        if(index == -1){
+            System.out.println("계좌번호를 찾을 수 없습니다.");
+            return;
+        }
+        System.out.print("예금액: ");
+
+        try {
             int money = Integer.parseInt(sc.nextLine());
             if(money <= 0){
                 System.out.println("예금액이 음수입니다.");
                 return;
             }
             users[index].setBalance(users[index].getBalance() + money);
-        }catch (InputMismatchException e){
+        }catch (NumberFormatException e){
             System.out.println("입력이 잘못되었습니다.");
         }
     }
@@ -129,18 +131,16 @@ public class BankApplication {
                 -----------
                 출금
                 -----------""");
-        try{
-            int index = -1;
-            System.out.print("계좌번호: ");
-            String str1 = sc.nextLine();
-            for(int i = 0 ; i < count ; i++){
-                if(users[i].getAccountNum().equals(str1)) index = i;
-            }
-            if(index == -1){
-                System.out.println("계좌번호를 찾을 수 없습니다.");
-                return;
-            }
-            System.out.print("출금액: ");
+        System.out.print("계좌번호: ");
+        String str1 = sc.nextLine();
+        int index = findUserIndex(str1);
+
+        if(index == -1){
+            System.out.println("계좌번호를 찾을 수 없습니다.");
+            return;
+        }
+        System.out.print("출금액: ");
+        try{  //try catch는 최소한의 범위로 감싸는 게 좋음
             int money = Integer.parseInt(sc.nextLine());
             if(money > users[index].getBalance()){
                 System.out.println("출금액이 잔고를 초과합니다.");
@@ -148,7 +148,7 @@ public class BankApplication {
             }
             users[index].setBalance(users[index].getBalance() - money);
             System.out.println("결과: 출금이 성공되었습니다.");
-        }catch (InputMismatchException e){
+        }catch (NumberFormatException e){
             System.out.println("입력이 잘못되었습니다.");
         }
     }
@@ -156,5 +156,12 @@ public class BankApplication {
     private static void programExit(){
         System.out.println("프로그램 종료");
         loop = false;
+    }
+
+    private static int findUserIndex(String accountNum){
+        for(int i = 0 ; i < count ; i++){
+            if(users[i].getAccountNum().equals(accountNum)) return i;
+        }
+        return -1;
     }
 }
