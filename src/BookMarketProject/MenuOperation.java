@@ -4,13 +4,13 @@ import java.util.Scanner;
 
 public class MenuOperation {
     private int menuNum;
-    private static int mCartCount = 0;
+    private int mCartCount = 0;
 
     static final int NUM_BOOK = 3;
     static final int NUM_ITEM = 7;
-    static String[][] book = new String[NUM_BOOK][NUM_ITEM];
+    private String[][] book = new String[NUM_BOOK][NUM_ITEM];
 
-    public static Scanner sc = new Scanner(System.in);
+    private Scanner sc = new Scanner(System.in);
 
 
     // 생성자
@@ -162,7 +162,7 @@ public class MenuOperation {
         Welcome.loop = false;
     }
 
-    public static boolean isCartInBook(CartItem[] cart, String bookId) {
+    public boolean isCartInBook(CartItem[] cart, String bookId) {
         boolean flag = false;
         for (int i = 0; i < mCartCount; i++) {
             if (bookId.equals(cart[i].getBookID())) {
@@ -174,7 +174,7 @@ public class MenuOperation {
         return flag;
     }
 
-    public static void bookList(){
+    public void bookList(){
         //도서 정보 저장
         book[0][0] = "ISBN9791170612759";
         book[0][1] = "가공범";

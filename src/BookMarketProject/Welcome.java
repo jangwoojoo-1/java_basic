@@ -8,14 +8,15 @@ public class Welcome {
     public static boolean loop = true;
 
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
         // 메뉴 구현 클래스
         MenuOperation menu = new MenuOperation();
 
         //이름 전화번호 입력
         System.out.print("당신의 이름을 입력하세요 : ");
-        String userName = MenuOperation.sc.nextLine();
+        String userName = sc.nextLine();
         System.out.print("연락처를 입력하세요 : ");
-        String userMobile = MenuOperation.sc.nextLine();
+        String userMobile = sc.nextLine();
         mUser = new User(userName, userMobile);
 
         // 메뉴판 만들기
@@ -25,7 +26,7 @@ public class Welcome {
 
             try {
                 System.out.print("메뉴 번호를 선택해주세요: ");
-                int n = Integer.parseInt(MenuOperation.sc.nextLine());
+                int n = Integer.parseInt(sc.nextLine());
                 menu.setMenuNum(n);
                 menu.menuOp(mUser, mCartItem);
             } catch (NumberFormatException e) {

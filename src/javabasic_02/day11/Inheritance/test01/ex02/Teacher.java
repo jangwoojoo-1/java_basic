@@ -1,36 +1,36 @@
 package javabasic_02.day11.Inheritance.test01.ex02;
 
 public class Teacher {
-    private static String name;
-    private static int age;
-    private static String subject;
+    private String name;
+    private int age;
+    private String subject;
 
-    public static String getName() {
-        return name;
+    public String getName() {
+        return this.name;
     }
 
-    public static int getAge() {
-        return age;
+    public int getAge() {
+        return this.age;
     }
 
-    public static String getSubject() {
-        return subject;
+    public String getSubject() {
+        return this.subject;
     }
 
-    public static void setName(String name) {
-        Teacher.name = name;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public static void setAge(int age) {
-        Teacher.age = age;
+    public void setAge(int age) {
+        this.age = age;
     }
 
-    public static void setSubject(String subject) {
-        Teacher.subject = subject;
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     public void print(){
         System.out.printf("이  름 : %s\t나 이 : %d\t%4s\t: %s\n",
-                name, age, "담당과목", subject);
+                this.name, this.age, "담당과목", this.subject);
     }
 }

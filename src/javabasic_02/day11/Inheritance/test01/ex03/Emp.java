@@ -1,35 +1,35 @@
 package javabasic_02.day11.Inheritance.test01.ex03;
 
 public class Emp {
-    private static String id;
-    private static String name;
-    private static int baseSalary;
+    private String id;
+    private String name;
+    private int baseSalary;
 
-    public static String getId() {
+    public String getId() {
         return id;
     }
 
-    public static String getName() {
+    public String getName() {
         return name;
     }
 
-    public static int getBaseSalary() {
+    public int getBaseSalary() {
         return baseSalary;
     }
 
-    public static void setId(String id) {
-        Emp.id = id;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public static void setName(String name) {
-        Emp.name = name;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public static void setBaseSalary(int baseSalary) {
-        Emp.baseSalary = baseSalary;
+    public void setBaseSalary(int baseSalary) {
+        this.baseSalary = baseSalary;
     }
 
-    public static double getSalary(double bonus){
+    public double getSalary(double bonus){
         double salary = baseSalary + baseSalary*bonus;
         return salary;
     }
