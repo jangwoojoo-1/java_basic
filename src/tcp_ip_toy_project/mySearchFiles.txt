@@ -1,0 +1,96 @@
+TCP 소켓 통신을 직접 만들어보는 건 네트워크 프로그래밍의 기본을 배우는 데 아주 좋아요. 여기서는 Java를 기준으로 아주 간단한 서버-클라이언트 구조를 만들어볼게요. 이건 콘솔에서 실행되는 프로그램이에요.
+
+🛠️ 1. 준비물
+Java 개발 환경 (JDK 설치)
+
+IDE (IntelliJ, Eclipse, VS Code 등)
+
+두 개의 클래스: Server.java, Client.java
+
+🖥️ 2. 서버 만들기 (Server.java)
+java
+import java.io.*;
+import java.net.*;
+
+public class Server {
+    public static void main(String[] args) {
+        try (ServerSocket serverSocket = new ServerSocket(12345)) {
+            System.out.println("서버가 시작되었습니다. 클라이언트 연결 대기 중...");
+
+            Socket clientSocket = serverSocket.accept(); // 클라이언트 연결 수락
+            System.out.println("클라이언트 연결됨: " + clientSocket.getInetAddress());
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+
+            String message = in.readLine(); // 클라이언트로부터 메시지 받기
+            System.out.println("클라이언트 메시지: " + message);
+
+            out.println("서버 응답: " + message.toUpperCase()); // 응답 보내기
+
+            clientSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+💻 3. 클라이언트 만들기 (Client.java)
+java
+import java.io.*;
+import java.net.*;
+
+public class Client {
+    public static void main(String[] args) {
+        try (Socket socket = new Socket("localhost", 12345)) {
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+
+            out.println("안녕하세요 서버님!"); // 서버로 메시지 전송
+            String response = in.readLine(); // 서버 응답 받기
+
+            System.out.println("서버 응답: " + response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+🚀 4. 실행 순서
+Server.java 먼저 실행 → 서버가 클라이언트 연결을 기다림
+
+Client.java 실행 → 서버에 연결하고 메시지 전송
+
+서버가 메시지를 받고 응답 → 클라이언트가 응답 출력
+
+🔄 확장 아이디어
+반복문으로 여러 메시지 주고받기
+
+멀티 클라이언트 처리 (스레드 사용)
+
+채팅 프로그램으로 발전시키기
+
+파일 전송 기능 추가
+
+product-management/
+├── client/
+│   ├── ClientMain.java
+│   ├── controller/
+│   ├── model/
+│   └── view/
+├── server/
+│   ├── ServerMain.java
+│   ├── controller/
+│   ├── model/
+│   └── service/
+├── common/
+│   ├── Product.java
+│   ├── JsonUtil.java
+│   └── exception/
+│       ├── MenuOptionNotFoundException.java
+│       ├── ProductNotFoundException.java
+│       ├── NullProductInfoException.java
+│       ├── ProductPriceOutOfRangeException.java
+│       ├── ProductStockOutOfRangeException.java
+│       └── InvalidInputTypeException.java
+
+
+org.json라이브러리 이용해 JSON 데이터를 다룰 수 있음
