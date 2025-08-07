@@ -5,7 +5,8 @@ public abstract class Account {
 	private long balance;
 	private String ownerName;
 
-	public Account(){}
+	public Account(){ }
+
 	public Account(String accId,long balance,String ownerName){
 		this.accId = accId;
 		this.balance = balance;
@@ -21,7 +22,6 @@ public abstract class Account {
 	public void withdraw(long money){
 		this.balance = this.balance - money;
 	}
-
 	public long getBalance(){
 		return this.balance;
 	}
@@ -40,5 +40,5 @@ public abstract class Account {
 	public void setBalance(long balance) {
 		this.balance = balance;
 	}
-	
+
 }
