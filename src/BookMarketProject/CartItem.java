@@ -1,7 +1,8 @@
 package BookMarketProject;
 
 public class CartItem {
-    private String[] itemBook = new String[7]; //책 정보 배열
+    //private String[] itemBook = new String[7]; //책 정보 배열
+    private Book itemBook;
     private String bookID; //책 개인키
     private int quantity; //책 수량
     private int totalPrice; //장바구니 가격
@@ -10,15 +11,15 @@ public class CartItem {
     private CartItem(){}
 
     //생성자2
-    public CartItem(String[] book){
-        this.itemBook = book;
-        this.bookID = book[0];
+    public CartItem(Book bookList){
+        this.itemBook = bookList;
+        this.bookID = bookList.getBookId();
         this.quantity = 1;
         updateTotalPrice();
     }
 
     // 값 반환 메서드들
-    public String[] getItemBook() {
+    public Book getItemBook() {
         return itemBook;
     }
 
@@ -35,7 +36,7 @@ public class CartItem {
     }
 
     //값 설정 메서드들
-    public void setItemBook(String[] itemBook) {
+    public void setItemBook(Book itemBook) {
         this.itemBook = itemBook;
     }
 
@@ -47,7 +48,11 @@ public class CartItem {
         this.quantity = quantity;
     }
 
+    public void setTotalPrice(int totalPrice){
+        this.totalPrice = totalPrice;
+    }
+
     public void updateTotalPrice(){
-        totalPrice = Integer.parseInt(this.itemBook[2]) * this.quantity;
+        totalPrice = this.itemBook.getUnitPrice() * this.quantity;
     }
 }

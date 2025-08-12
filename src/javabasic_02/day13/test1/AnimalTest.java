@@ -7,9 +7,14 @@ public class AnimalTest {
 		Animal chicken = new Chicken(3);
 		Chicken cheatableChicken = new Chicken(5);
 		
-		if(cheatableChicken instanceof Cheatable){
+		if(cheatableChicken instanceof Chicken){
 			cheatableChicken.fly();
 		}
+
+//		if(chicken instanceof Cheatable){
+//			cheatableChicken.fly();
+//		} //chicken은 animal 타입이기에  cheatable 타입으로 변환할 수 없지만
+		//이 경우에는 객체가 Chicken이기에 변환 가능
 		
 		for(int i = 1 ; i <=3 ; i++){
 			System.out.println(i+"시간 후");

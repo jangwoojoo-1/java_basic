@@ -1,9 +1,13 @@
 package BookMarketProject;
 
+import java_advanced_01.day13.B;
+
 import java.util.Scanner;
 
+import static BookMarketProject.Cart.NUM_BOOK;
+
 public class Welcome {
-    static CartItem[] mCartItem = new CartItem[MenuOperation.NUM_BOOK];
+    static Cart cart = new Cart();
     static User mUser;
     public static boolean loop = true;
 
@@ -28,7 +32,7 @@ public class Welcome {
                 System.out.print("메뉴 번호를 선택해주세요: ");
                 int n = Integer.parseInt(sc.nextLine());
                 menu.setMenuNum(n);
-                menu.menuOp(mUser, mCartItem);
+                menu.menuOp(mUser, cart);
             } catch (NumberFormatException e) {
                 System.out.println("숫자를 정확히 입력해주세요.");
             }

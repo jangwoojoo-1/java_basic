@@ -1,6 +1,8 @@
 package javabasic_02.day13.test2;
 
 public class CarFactory extends Factory implements IWorkingTogether{
+    CarFactory(){ }
+
     CarFactory(String name, int openHour, int closeHour){
         super(name, openHour, closeHour);
     }
@@ -9,11 +11,11 @@ public class CarFactory extends Factory implements IWorkingTogether{
     public int makeProducts(char skill) {
         switch (skill){
             case 'A':
-                return this.getWorkingTime()*3;
+                return super.getWorkingTime()*3;
             case 'B':
-                return this.getWorkingTime()*2;
+                return super.getWorkingTime()*2;
             case 'C':
-                return this.getWorkingTime();
+                return super.getWorkingTime();
             default:
                 return 0;
         }

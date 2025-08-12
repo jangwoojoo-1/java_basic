@@ -5,6 +5,8 @@ public abstract class Factory {
     private int openHour;
     private int closeHour;
 
+    Factory(){ }
+
     Factory(String name, int openHour, int closeHour){
         this.name = name;
         this.openHour = openHour;
