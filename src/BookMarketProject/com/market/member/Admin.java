@@ -1,4 +1,4 @@
-package BookMarketProject;
+package BookMarketProject.com.market.member;
 
 public class Admin extends Person{
     // Person 자식 클래스, 관리자용

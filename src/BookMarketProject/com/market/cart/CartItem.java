@@ -1,4 +1,6 @@
-package BookMarketProject;
+package BookMarketProject.com.market.cart;
+
+import BookMarketProject.com.market.bookitem.Book;
 
 public class CartItem {
     //private String[] itemBook = new String[7]; //책 정보 배열
@@ -42,10 +44,12 @@ public class CartItem {
 
     public void setBookID(String bookID) {
         this.bookID = bookID;
+        this.updateTotalPrice();
     }
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+        this.updateTotalPrice();
     }
 
     public void setTotalPrice(int totalPrice){

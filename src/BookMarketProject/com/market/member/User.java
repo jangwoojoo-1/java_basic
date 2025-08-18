@@ -1,4 +1,4 @@
-package BookMarketProject;
+package BookMarketProject.com.market.member;
 
 public class User extends Person{
     //상속, User 클래스 자식 클래스, 유저 관리용

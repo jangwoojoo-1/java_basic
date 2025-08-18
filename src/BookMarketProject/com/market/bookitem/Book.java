@@ -1,4 +1,4 @@
-package BookMarketProject;
+package BookMarketProject.com.market.bookitem;
 
 public class Book extends Item{
     private String author;
@@ -20,32 +20,32 @@ public class Book extends Item{
     }
 
     @Override
-    String getBookId() {
+    public String getBookId() {
         return this.bookId;
     }
 
     @Override
-    String getName() {
+    public String getName() {
         return this.name;
     }
 
     @Override
-    int getUnitPrice() {
+    public int getUnitPrice() {
         return this.unitPrice;
     }
 
     @Override
-    void setBookId(String bookId) {
+    public void setBookId(String bookId) {
         this.bookId = bookId;
     }
 
     @Override
-    void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
     @Override
-    void setUnitPrice(int unitPrice) {
+    public void setUnitPrice(int unitPrice) {
         this.unitPrice = unitPrice;
     }
 

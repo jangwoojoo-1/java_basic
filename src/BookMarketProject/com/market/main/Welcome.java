@@ -1,10 +1,10 @@
-package BookMarketProject;
+package BookMarketProject.com.market.main;
 
-import java_advanced_01.day13.B;
+import BookMarketProject.com.market.cart.Cart;
+import BookMarketProject.com.market.member.User;
+import BookMarketProject.com.market.operation.MenuOperation;
 
 import java.util.Scanner;
-
-import static BookMarketProject.Cart.NUM_BOOK;
 
 public class Welcome {
     static Cart cart = new Cart();
@@ -33,8 +33,9 @@ public class Welcome {
                 int n = Integer.parseInt(sc.nextLine());
                 menu.setMenuNum(n);
                 menu.menuOp(mUser, cart);
-            } catch (NumberFormatException e) {
-                System.out.println("숫자를 정확히 입력해주세요.");
+            } catch(Exception e) {
+                System.out.println("올바르지 않은 메뉴 선택으로 종료합니다.");
+                loop = false;
             }
 
         }

@@ -1,4 +1,6 @@
-package BookMarketProject;
+package BookMarketProject.com.market.cart;
+
+import BookMarketProject.com.market.bookitem.Book;
 
 public interface CartInterface {
     void printBookList(Book[] p);

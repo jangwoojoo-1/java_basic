@@ -1,4 +1,4 @@
-package BookMarketProject;
+package BookMarketProject.com.market.member;
 
 public class Person {
     //private 변수 선언
