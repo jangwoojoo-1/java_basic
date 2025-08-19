@@ -2,16 +2,18 @@ package BookMarketProject.com.market.cart;
 
 import BookMarketProject.com.market.bookitem.Book;
 
+import java.util.ArrayList;
+
 public class Cart implements CartInterface{
-    static final int NUM_BOOK = 3;
-    public CartItem[] mCartItem = new CartItem[NUM_BOOK];
+    public ArrayList<CartItem> mCartItem = new ArrayList<>();
     public static int mCartCount = 0;
 
     public Cart(){}
 
     @Override
-    public void printBookList(Book[] bookList) {
-        for (Book book : bookList) {
+    public void printBookList(ArrayList<Book> p) {
+        for (int i = 0; i < p.size(); i++) {
+            Book book = p.get(i);
             System.out.print(book.getBookId() + " | ");
             System.out.print(book.getName() + " | ");
             System.out.print(book.getUnitPrice() + " | ");
@@ -26,9 +28,9 @@ public class Cart implements CartInterface{
     public boolean isCartInBook(String id) {//이미 장바구니 안에 책 있을 때 수량 플러스
         boolean flag = false;
         for(int i = 0 ; i < mCartCount ; i++){
-            if(id == mCartItem[i].getBookID()){
-                mCartItem[i].setQuantity(mCartItem[i].getQuantity()+1);
-                mCartItem[i].updateTotalPrice();
+            CartItem book = mCartItem.get(i);
+            if(id.equals(book.getBookID())){
+                book.setQuantity(book.getQuantity()+1);
                 flag = true;
             }
         }
@@ -37,27 +39,19 @@ public class Cart implements CartInterface{
 
     @Override
     public void insertBook(Book p) {
-        mCartItem[mCartCount++] = new CartItem(p);
+        mCartItem.add(new CartItem(p));
+        mCartCount++;
     }
 
     @Override
     public void removeCart(int numId) { //장바구니 항목 삭제
-        CartItem[] cartItem = new CartItem[NUM_BOOK];
-        int num = 0;
-
-        for(int i = 0 ; i < mCartCount ; i++){
-            if(numId != i){
-                cartItem[num++] = mCartItem[i];
-            }
-        }
-
-        mCartCount = num;
-        mCartItem = cartItem;
+        mCartItem.remove(numId);
+        mCartCount--;
     }
 
     @Override
     public void deleteBook() { //장바구니 비우기
-        mCartItem = new CartItem[NUM_BOOK];
+        mCartItem.clear();
         mCartCount = 0;
     }
 
@@ -66,9 +60,9 @@ public class Cart implements CartInterface{
         System.out.println("------------------------------------------");
         System.out.println("   도서ID \t |    수량 \t |    합계");
         for(int i = 0 ; i < mCartCount ; i++){
-            System.out.print("   " + mCartItem[i].getBookID() + " \t | ");
-            System.out.print("   " + mCartItem[i].getQuantity() + " \t | ");
-            System.out.println("   " + mCartItem[i].getTotalPrice());
+            System.out.print("   " + mCartItem.get(i).getBookID() + " \t | ");
+            System.out.print("   " + mCartItem.get(i).getQuantity() + " \t | ");
+            System.out.println("   " + mCartItem.get(i).getTotalPrice());
         }
         System.out.println("------------------------------------------");
     }
