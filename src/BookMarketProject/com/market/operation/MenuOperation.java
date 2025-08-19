@@ -1,43 +1,37 @@
 package BookMarketProject.com.market.operation;
 
 import BookMarketProject.com.market.exception.CartException;
+import BookMarketProject.com.market.exception.WrongInputException;
 import BookMarketProject.com.market.main.Welcome;
 import BookMarketProject.com.market.bookitem.Book;
 import BookMarketProject.com.market.cart.Cart;
 import BookMarketProject.com.market.member.Admin;
 import BookMarketProject.com.market.member.User;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
 public class MenuOperation {
-    private int menuNum;
-
-    ArrayList<Book> mBookList;
-//    int mTotalBook = 0;
+    //변수
+    private int menuNum; //메뉴 선택 번호 저장 변수
+    ArrayList<Book> mBookList; // 책 리스트
     private Scanner sc = new Scanner(System.in);
-
 
     // 생성자
     public MenuOperation() {
-//        mTotalBook = totalFiletoBookList();
         mBookList = new ArrayList<>();
         bookList(mBookList);
     }
 
-    public int getMenuNum() {
-        return menuNum;
-    }
-
+    //메뉴 번호 접근 함수 - 값 설정
     public void setMenuNum(int menuNum) {
         this.menuNum = menuNum;
     }
 
+    //메뉴판 출력 함수
     public void menuIntroduction(){
         //메뉴판 문자열
         String divLine = "*******************************************************";
@@ -65,8 +59,9 @@ public class MenuOperation {
         System.out.printf("%s\n", divLine);
     }
 
+    //operation 함수
     public void menuOp(User user, Cart cart){
-        try{
+        try{ //각 함수에서 던지는 exception 처리
             switch(menuNum){
                 case 1:
                     menuGustInfo(user.getUserName(), user.getUserMobile());
@@ -104,65 +99,76 @@ public class MenuOperation {
 
     }
 
+    //고객 정보 출력 함수
     public void menuGustInfo(String name, String phone){
         System.out.println("현재 고객 정보 : ");
         System.out.println("이름 " + name + "  연락처 " + phone);
     }
 
-    public void menuCartItemList(Cart cart){
-        if(cart.mCartCount >= 0){
-            cart.printCart();
-        }
+    // 장바구니 목록 출력 함수
+    public void menuCartItemList(Cart cart) throws CartException{
+        if(cart.mCartCount == 0) throw new CartException("장바구니에 항목이없습니다.");
+        cart.printCart();
     }
 
-    public void menuCartClear(Cart cart) throws CartException {
-        System.out.println("3. 장바구니 비우기");
-        if(cart.mCartCount == 0){
-            throw new CartException("장바구니에 항목이 없습니다.");
-        } else {
-            System.out.println("장바구니의 모든 항목을 삭제하겠습니까? Y | N ");
-            String str = sc.nextLine();
+    // 장바구니 비우기 함수
+    public void menuCartClear(Cart cart) throws CartException, WrongInputException {
+        // 장바구니에 항목이 없을 경우 예외 던지기
+        if(cart.mCartCount == 0) throw new CartException("장바구니에 항목이 없습니다.");
 
-            if(str.toUpperCase().equals("Y")){
+        //2차 확인
+        System.out.println("장바구니의 모든 항목을 삭제하겠습니까? Y | N ");
+        String str = sc.nextLine();
+
+        //Y 입력 시 삭제, N 입력 시 작업 취소, 다른 것들 입력시 오류 처리
+        switch (str.trim().toUpperCase()){
+            case "Y":
                 System.out.println("장바구니의 모든 항목을 삭제했습니다.");
                 cart.deleteBook();
-            }
+                break;
+            case "N":
+                System.out.println("작업을 취소합니다.");
+                break;
+            default:
+                throw new WrongInputException("잘못된 입력입니다.");
         }
     }
 
-    public void menuCartAddItem(Cart cart){
-        System.out.println("4. 장바구니에 항목 추가하기");
+    //장바구니에 상품 담기 함수
+    public void menuCartAddItem(Cart cart) throws WrongInputException{
+        //책 리스트 출력
         cart.printBookList(mBookList);
-
         boolean loop = true;
 
         while(loop){
+            //도서 입력
             System.out.print("장바구니에 추가할 도서의 ID를 입력하세요 : ");
-
             String str = sc.nextLine();
 
-            boolean flag = false;
-            int numId = -1;
+            //람다식을 활용한 도서리스트에서 도서 찾기
+            //있으면 book객체 반환, 없으면 null 반환
+            Book findBook = mBookList.stream().filter(book->book.getBookId().equals(str)).findFirst().orElse(null);
 
-            for(int i = 0 ; i < mBookList.size() ; i++){
-                if(str.equals(mBookList.get(i).getBookId())){
-                    numId = i;
-                    flag = true;
-                    break;
-                }
-            }
-
-            if(flag){
+            //도서가 있으면
+            if(findBook != null){
                 System.out.println("장바구니에 추가하겠습니까? Y | N ");
-                str = sc.nextLine();
+                String str1 = sc.nextLine();
 
-                if(str.toUpperCase().equals("Y")){
-                    System.out.println(mBookList.get(numId).getBookId() + "도서가 장바구니에 입력되었습니다.");
-                    if(!cart.isCartInBook(mBookList.get(numId).getBookId()))
-                        cart.insertBook(mBookList.get(numId));
+                //Y 입력 시 삭제, N 입력 시 작업 취소, 다른 것들 입력시 오류 처리
+                switch (str1.trim().toUpperCase()){
+                    case "Y":
+                        System.out.println(findBook.getBookId() + "도서가 장바구니에 입력되었습니다.");
+                        if(!cart.isCartInBook(findBook.getBookId()))
+                            cart.insertBook(findBook);
+                        break;
+                    case "N":
+                        System.out.println("작업을 취소합니다.");
+                        break;
+                    default:
+                        throw new WrongInputException("잘못된 입력입니다.");
                 }
-
-                loop = false;
+                //loop 종료
+                break;
             } else {
                 System.out.println("다시 입력해주세요.");
             }
@@ -173,41 +179,41 @@ public class MenuOperation {
         System.out.println("5. 장바구니의 항목 수량 줄이기");
     }
 
-    public void menuCartRemoveItem(Cart cart) throws CartException{
-        System.out.println("6. 장바구니의 항목 삭제하기");
-        if(cart.mCartCount == 0)
-            throw new CartException("장바구니에 항목이 없습니다.");
+    public void menuCartRemoveItem(Cart cart) throws CartException, WrongInputException{
+        if(cart.mCartCount == 0) throw new CartException("장바구니에 항목이 없습니다.");
         else{
             cart.printCart();
             boolean flag = true;
             while(flag){
                 System.out.print("장바구니에서 삭제할 도서의 ID를 입력하세요 : ");
                 String str = sc.nextLine();
-                boolean TF = false;
-                int numId = -1;
 
-                for(int i = 0; i < cart.mCartCount ; i++){
-                    if(str.equals(cart.mCartItem.get(i).getBookID())){
-                        numId = i;
-                        TF = true;
-                        break;
-                    }
-                }
-                if(TF){
+                //장바구니에서 삭제할 도서 찾기
+                int index = cart.mCartItem.indexOf(cart.mCartItem.stream().filter(item->item.getBookID().equals(str)).findFirst().orElse(null));
+
+                if(index != -1){
                     System.out.println("장바구니의 항목을 삭제하겠습니까? Y | N ");
-                    str = sc.nextLine();
-                    if(str.toUpperCase().equals("Y")){
-                        System.out.println(cart.mCartItem.get(numId).getBookID() +
-                                "장바구니에서 도서가 삭제되었습니다.");
+                    String str1 = sc.nextLine();
+
+                    switch (str1.trim().toUpperCase()){
+                        case "Y":
+                            System.out.println(cart.mCartItem.get(index).getBookID() +
+                                    "장바구니에서 도서가 삭제되었습니다.");
+                            cart.removeCart(index);
+                            break;
+                        case "N":
+                            System.out.println("작업을 취소합니다.");
+                            break;
+                        default:
+                            throw new WrongInputException("잘못된 입력입니다.");
                     }
-                    cart.removeCart(numId);
-                    flag = false;
+                    //loop 종료
+                    break;
                 } else {
                     System.out.println("다시 입력해주세요.");
                 }
             }
         }
-
     }
 
     public void menuCartBill(User user, Cart cart) throws CartException{
@@ -215,6 +221,7 @@ public class MenuOperation {
         else {
             System.out.println("배송받을 분은 고객 정보와 같습니까? Y | N ");
             String str = sc.nextLine();
+
             if(str.toUpperCase().equals("Y")){
                 System.out.println("배송지를 입력해주세요 ");
                 String address = sc.nextLine();
@@ -312,36 +319,11 @@ public class MenuOperation {
         setFiletoBookList(booklist);
     }
 
-//    public int totalFiletoBookList() {
-//        try {
-//            FileReader fr = new FileReader("book.txt");
-//            BufferedReader br = new BufferedReader(fr);
-//
-//            String str;
-//            int num = 0;
-//            while ((str = br.readLine()) != null) {
-//                if(str.contains("ISBN")){
-//                    ++num;
-//                }
-//            }
-//            br.close();
-//            fr.close();
-//
-//            return num;
-//        } catch(Exception e){
-//            System.out.println(e);
-//        }
-//        return 0;
-//    }
-
     public void setFiletoBookList(ArrayList<Book> booklist) {
-        try {
-            FileReader fr = new FileReader("book.txt");
-            BufferedReader br = new BufferedReader(fr);
+        try(FileReader fr = new FileReader("C:/study/java_basic/src/BookMarketProject/com/market/BookMarket/book.txt"); BufferedReader br = new BufferedReader(fr)) {
 
             String str;
             String[] readBook = new String[7];
-            int count = 0;
 
             while ((str = br.readLine()) != null) {
                 if(str.contains("ISBN")){
@@ -356,7 +338,9 @@ public class MenuOperation {
                 booklist.add(new Book(readBook[0],readBook[1], Integer.parseInt(readBook[2]),
                         readBook[3], readBook[4], readBook[5], readBook[6]));
             }
-        } catch(Exception e){
+        } catch(IOException e){
+            System.out.println(e);
+        } catch(NumberFormatException e){
             System.out.println(e);
         }
     }
