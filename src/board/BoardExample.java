@@ -187,6 +187,4 @@ public class BoardExample {
             boardExample.list();
         }
     }
-
-
 }
