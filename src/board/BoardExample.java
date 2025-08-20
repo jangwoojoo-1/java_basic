@@ -4,24 +4,25 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class BoardExample {
-    BoardExample(){}
-    ArrayList<Board> boards = new ArrayList<>();
+    ArrayList<Board> boards = new ArrayList<>();  //(Board)글이 등록(저장)  공간 => 게시판
     Scanner sc = new Scanner(System.in);
     static boolean loop = true;
+
+    BoardExample(){}
 
     //게시물 목록 출력 메서드
     public void list(){
 
             System.out.print("""
                 ------------------------------------------------------
-                no \twriter \t date \t\t title
+                no \t writer \t\t date \t\t title
                 ------------------------------------------------------
                 """);
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
             for (int i = boards.size() -1; i >= 0; i--) {
                 Board board = boards.get(i);
                 String date = dateFormat.format(board.getBdate());
-                System.out.printf("%d \t%s \t%s %s \n",
+                System.out.printf("%d \t %s \t\t %s \t\t%s \n",
                         board.getBno(), board.getBwriter(), date,
                         board.getBtitle());
             }
@@ -79,24 +80,32 @@ public class BoardExample {
                     boards.add(new Board((boards.size()+1), title, content, writer, date));
                     break;
                 case 2:
-                    System.out.println("작업을 끝냅니다.");
+                    System.out.println("작업을 취소합니다.");
                     break;
                 default:
-                    System.out.println("숫자 1, 2를 입력해주세요.");
+                    System.out.println("숫자 1 또는 2를 입력해주세요.");
             }
         } catch (NumberFormatException e){
             System.out.println("숫자를 입력해주세요.");
+        } catch (InputMismatchException e) {
+            System.out.println("숫자를 제대로 입력해주세요.");
         }
     }
 
     public void read(){
         System.out.println("[게시물 읽기]");
         System.out.print("bno: ");
-        int no = sc.nextInt();
-        System.out.println("#############");
-        System.out.println(boards.get(no-1).toString());
-        System.out.println("#############");
-        change(no);
+        try {
+            int no = sc.nextInt();
+            System.out.println("#############");
+            System.out.println(boards.get(no-1).toString());
+            System.out.println("#############");
+            change(no);
+        } catch (NumberFormatException e){
+            System.out.println("숫자를 입력해주세요.");
+        } catch (InputMismatchException e) {
+            System.out.println("숫자를 제대로 입력해주세요.");
+        }
     }
 
     public void change(int no){
@@ -116,6 +125,8 @@ public class BoardExample {
             }
         } catch (NumberFormatException e){
             System.out.println("숫자를 입력해주세요.");
+        } catch (InputMismatchException e) {
+            System.out.println("숫자를 제대로 입력해주세요.");
         }
     }
 
@@ -131,13 +142,15 @@ public class BoardExample {
                     boards.clear();
                     break;
                 case 2:
-                    System.out.println("작업을 끝냅니다.");
+                    System.out.println("작업을 취소합니다.");
                     break;
                 default:
-                    System.out.println("숫자 1, 2를 입력해주세요.");
+                    System.out.println("숫자 1 또는 2를 입력해주세요.");
             };
         } catch (NumberFormatException e){
             System.out.println("숫자를 입력해주세요.");
+        } catch (InputMismatchException e) {
+            System.out.println("숫자를 제대로 입력해주세요.");
         }
     }
 
@@ -167,13 +180,15 @@ public class BoardExample {
                     boards.get(no-1).setBwriter(writer);
                     break;
                 case 2:
-                    System.out.println("작업을 끝냅니다.");
+                    System.out.println("작업을 취소합니다.");
                     break;
                 default:
-                    System.out.println("숫자 1, 2를 입력해주세요.");
+                    System.out.println("숫자 1 또는 2를 입력해주세요.");
             };
         } catch (NumberFormatException e){
             System.out.println("숫자를 입력해주세요.");
+        } catch (InputMismatchException e) {
+            System.out.println("숫자를 제대로 입력해주세요.");
         }
     }
 
