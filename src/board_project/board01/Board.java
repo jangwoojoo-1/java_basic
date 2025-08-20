@@ -1,4 +1,4 @@
-package board;
+package board_project.board01;
 
 import lombok.Data;
 
@@ -20,5 +20,14 @@ public class Board{
         this.bcontent = bcontent;
         this.bwriter = bwriter;
         this.bdate = bdate;
+    }
+
+    @Override
+    public String toString() {
+        return "번호: " + bno +
+                "\n제목: " + btitle +
+                "\n내용: " + bcontent +
+                "\n작성자: " + bwriter +
+                "\n날짜: " + bdate;
     }
 }

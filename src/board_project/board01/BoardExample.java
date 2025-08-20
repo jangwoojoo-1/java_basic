@@ -1,7 +1,10 @@
-package board;
+package board_project.board01;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class BoardExample {
     ArrayList<Board> boards = new ArrayList<>();  //(Board)글이 등록(저장)  공간 => 게시판
@@ -15,14 +18,14 @@ public class BoardExample {
 
             System.out.print("""
                 ------------------------------------------------------
-                no \t writer \t\t date \t\t title
+                no \t writer \t date \t\t\t title
                 ------------------------------------------------------
                 """);
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
             for (int i = boards.size() -1; i >= 0; i--) {
                 Board board = boards.get(i);
                 String date = dateFormat.format(board.getBdate());
-                System.out.printf("%d \t %s \t\t %s \t\t%s \n",
+                System.out.printf("%d \t %s \t\t %s \t %s \n",
                         board.getBno(), board.getBwriter(), date,
                         board.getBtitle());
             }
