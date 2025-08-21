@@ -12,13 +12,13 @@ public enum BoardText {
     EXIT("\n게시판 종료"),
     READ_NUMBER("bno: "),
     BNO("번호: "),
-    Title("제목: "),
+    TITLE("제목: "),
     BOARD("내용: "),
     WRITER("작성자: "),
     DATE("날짜: "),
     READ_LINE("#".repeat(30)),
-    CHECK_MENU("보조 메뉴: 1.OK | 2.Cancel"),
-    READ_CHECK_MENU("보조 메뉴: 1.Update | 2.Delete | 3.List");
+    CHECK_MENU("보조 메뉴: 1.OK | 2.Cancel \n메뉴 선택: "),
+    READ_CHECK_MENU("보조 메뉴: 1.Update | 2.Delete | 3.List \n메뉴 선택: ");
 
 
     private final String text;
