@@ -17,7 +17,18 @@ public enum MenuText {
     CART("장바구니 상품 목록 : "),
     BOOKID("도서ID"),
     QUANTITY("수량"),
-    TOTAL("합계");
+    TOTAL("합계"),
+
+    INPUT_NAME("당신의 이름을 입력하세요 : "),
+    INPUT_PHONE("연락처를 입력하세요 : "),
+    MENU_NUM("메뉴 번호를 선택해주세요: "),
+    USER("현재 고객 정보 : "),
+    NAME("이름 : "),
+    PHONE("  연락처 : "),
+
+    CART_CLEAR("장바구니의 모든 항목을 삭제하겠습니까? Y | N "),
+    CLEAR_MSG("장바구니의 모든 항목을 삭제했습니다."),
+    CANCEL_MSG("작업을 취소합니다.");
 
     private final String text;
 

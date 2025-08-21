@@ -1,13 +1,14 @@
 package BookMarketProject.com.market.operation;
 
 import BookMarketProject.com.market.common.MenuText;
+import BookMarketProject.com.market.common.ValidCheck;
 import BookMarketProject.com.market.exception.CartException;
 import BookMarketProject.com.market.exception.WrongInputException;
-import BookMarketProject.com.market.main.Welcome;
 import BookMarketProject.com.market.bookitem.Book;
 import BookMarketProject.com.market.cart.Cart;
 import BookMarketProject.com.market.member.Admin;
 import BookMarketProject.com.market.member.User;
+import lombok.NoArgsConstructor;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -15,18 +16,37 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
+
+@NoArgsConstructor
 public class MenuOperation {
-    private int menuNum; //메뉴 선택 번호 저장 변수
-    ArrayList<Book> mBookList = new ArrayList<>(); // 책 리스트
+    private Cart cart = new Cart();
+    private ArrayList<Book> mBookList = new ArrayList<>(); // 책 리스트
     private Scanner sc = new Scanner(System.in);
+    private User mUser;
+    private boolean loop = true;
+    private ValidCheck validCheck = new ValidCheck();
 
-    // 생성자
-    public MenuOperation() {
-    }
+    public void run(){
+        System.out.print(MenuText.INPUT_NAME.getText());
+        String userName = sc.nextLine();
+        System.out.print(MenuText.INPUT_PHONE.getText());
+        String userMobile = sc.nextLine();
+        mUser = new User(userName, userMobile);
 
-    //메뉴 번호 접근 함수 - 값 설정
-    public void setMenuNum(int menuNum) {
-        this.menuNum = menuNum;
+        String menuNum;
+        while (loop){
+            try {
+                menuIntroduction();
+                System.out.print(MenuText.MENU_NUM.getText());
+                menuNum = sc.nextLine();
+                validCheck.isMenuValid(menuNum);
+
+                menuOp(menuNum);
+            } catch(Exception e) {
+                System.out.println("올바르지 않은 메뉴 선택입니다.");
+            }
+
+        }
     }
 
     //메뉴판 출력 함수
@@ -43,43 +63,19 @@ public class MenuOperation {
         System.out.printf("%s\n", MenuText.MENU_LINE.getText());
     }
 
-    public void run(){
-
-    }
-
     //operation 함수
-    public void menuOp(User user, Cart cart){
+    public void menuOp(String menuNum){
         try{ //각 함수에서 던지는 exception 처리
             switch(menuNum){
-                case 1:
-                    menuGustInfo(user.getUserName(), user.getUserMobile());
-                    break;
-                case 2:
-                    menuCartItemList(cart);
-                    break;
-                case 3:
-                    menuCartClear(cart);
-                    break;
-                case 4:
-                    menuCartAddItem(cart);
-                    break;
-                case 5:
-                    menuCartRemoveItemCount();
-                    break;
-                case 6:
-                    menuCartRemoveItem(cart);
-                    break;
-                case 7:
-                    menuCartBill(user, cart);
-                    break;
-                case 8:
-                    menuExit();
-                    break;
-                case 9:
-                    menuAdminLogin(user);
-                    break;
-                default:
-                    System.out.println("1부터 9까지의 숫자를 입력하세요.");
+                case "1" -> menuGustInfo(mUser);
+                case "2" -> menuCartItemList();
+                case "3" -> menuCartClear();
+                case "4" -> menuCartAddItem();
+                case "5" -> menuCartRemoveItemCount();
+                case "6" -> menuCartRemoveItem();
+                case "7" -> menuCartBill();
+                case "8" -> menuExit();
+                case "9" -> menuAdminLogin();
             }
         } catch (Exception e){
             System.out.println(e.getMessage());
@@ -87,43 +83,36 @@ public class MenuOperation {
 
     }
 
-    //고객 정보 출력 함수
-    public void menuGustInfo(String name, String phone){
-        System.out.println("현재 고객 정보 : ");
-        System.out.println("이름 " + name + "  연락처 " + phone);
+    public void menuGustInfo(User user){
+        System.out.println(MenuText.USER.getText());
+        System.out.println(MenuText.NAME.getText() + user.getUserName() + MenuText.PHONE.getText() + user.getUserMobile());
     }
 
-    // 장바구니 목록 출력 함수
-    public void menuCartItemList(Cart cart) throws CartException{
-        if(cart.mCartItem.size() == 0) throw new CartException("장바구니에 항목이없습니다.");
+
+    public void menuCartItemList() throws CartException{
+        if(cart.mCartItem.size() == 0) throw new CartException("장바구니에 항목이 없습니다.");
         cart.printCart();
     }
 
-    // 장바구니 비우기 함수
-    public void menuCartClear(Cart cart) throws CartException, WrongInputException {
-        // 장바구니에 항목이 없을 경우 예외 던지기
+
+    public void menuCartClear() throws CartException, WrongInputException {
         if(cart.mCartItem.size() == 0) throw new CartException("장바구니에 항목이 없습니다.");
 
-        //2차 확인
-        System.out.println("장바구니의 모든 항목을 삭제하겠습니까? Y | N ");
+        System.out.println(MenuText.CART_CLEAR.getText());
         String str = sc.nextLine();
 
-        //Y 입력 시 삭제, N 입력 시 작업 취소, 다른 것들 입력시 오류 처리
-        switch (str.trim().toUpperCase()){
-            case "Y":
-                System.out.println("장바구니의 모든 항목을 삭제했습니다.");
+        validCheck.isDeleteOptionMenuValid(str);
+        switch (str){
+            case "Y" -> {
+                System.out.println(MenuText.CLEAR_MSG.getText());
                 cart.deleteBook();
-                break;
-            case "N":
-                System.out.println("작업을 취소합니다.");
-                break;
-            default:
-                throw new WrongInputException("잘못된 입력입니다.");
+            }
+            case "N" -> System.out.println(MenuText.CANCEL_MSG.getText());
         }
     }
 
     //장바구니에 상품 담기 함수
-    public void menuCartAddItem(Cart cart) throws WrongInputException{
+    public void menuCartAddItem() throws WrongInputException{
         //책 리스트 출력
         bookList();
         cart.printBookList(mBookList);
@@ -168,7 +157,7 @@ public class MenuOperation {
         System.out.println("5. 장바구니의 항목 수량 줄이기");
     }
 
-    public void menuCartRemoveItem(Cart cart) throws CartException, WrongInputException{
+    public void menuCartRemoveItem() throws CartException, WrongInputException{
         if(cart.mCartItem.size() == 0) throw new CartException("장바구니에 항목이 없습니다.");
         else{
             cart.printCart();
@@ -205,7 +194,7 @@ public class MenuOperation {
         }
     }
 
-    public void menuCartBill(User user, Cart cart) throws CartException{
+    public void menuCartBill() throws CartException{
         if(cart.mCartItem.size() == 0) throw new CartException("장바구니에 항목이 없습니다.");
         else {
             System.out.println("배송받을 분은 고객 정보와 같습니까? Y | N ");
@@ -214,7 +203,7 @@ public class MenuOperation {
             if(str.toUpperCase().equals("Y")){
                 System.out.println("배송지를 입력해주세요 ");
                 String address = sc.nextLine();
-                printBill(user.getUserName(), user.getUserMobile(), address, cart);
+                printBill(mUser.getUserName(), mUser.getUserMobile(), address, cart);
             } else {
                 System.out.print("배송받을 고객명을 입력하세요 ");
                 String name = sc.nextLine();
@@ -250,17 +239,17 @@ public class MenuOperation {
 
     public void menuExit(){
         System.out.println("8. 프로그램 종료");
-        Welcome.loop = false;
+        System.exit(0);
     }
 
-    public void menuAdminLogin(User user){
+    public void menuAdminLogin(){
         System.out.println("관리자 정보를 입력하세요");
         System.out.print("아이디 : ");
         String adminId = sc.next();
         System.out.print("비밀번호 : ");
         String adminPW = sc.next();
 
-        Admin admin = new Admin(user.getUserName(), user.getUserMobile());
+        Admin admin = new Admin(mUser.getUserName(), mUser.getUserMobile());
         if(adminId.equals(admin.getId())&&adminPW.equals(admin.getPassword())){
             String[] writeBook = new String[7];
             System.out.println("도서 정보를 추가하겠습니까? Y | N ");
