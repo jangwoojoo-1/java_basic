@@ -1,5 +1,6 @@
 package BookMarketProject.com.market.operation;
 
+import BookMarketProject.com.market.common.MenuText;
 import BookMarketProject.com.market.exception.CartException;
 import BookMarketProject.com.market.exception.WrongInputException;
 import BookMarketProject.com.market.main.Welcome;
@@ -15,15 +16,12 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class MenuOperation {
-    //변수
     private int menuNum; //메뉴 선택 번호 저장 변수
-    ArrayList<Book> mBookList; // 책 리스트
+    ArrayList<Book> mBookList = new ArrayList<>(); // 책 리스트
     private Scanner sc = new Scanner(System.in);
 
     // 생성자
     public MenuOperation() {
-        mBookList = new ArrayList<>();
-        bookList(mBookList);
     }
 
     //메뉴 번호 접근 함수 - 값 설정
@@ -33,30 +31,20 @@ public class MenuOperation {
 
     //메뉴판 출력 함수
     public void menuIntroduction(){
-        //메뉴판 문자열
-        String divLine = "*******************************************************";
-        String welcomeMent1 = "Welcome to Shopping Mall";
-        String welcomeMent2 = "Welcome to Book Market";
-        String menu1 = "1. 고객 정보 확인하기";
-        String menu2 = "2. 장바구니 상품 목록 보기";
-        String menu3 = "3. 장바구니 비우기";
-        String menu4 = "4. 장바구니에 항목 추가하기";
-        String menu5 = "5. 장바구니의 항목수량 줄이기";
-        String menu6 = "6. 장바구니의 항목 삭제하기";
-        String menu7 = "7. 영수증 표시하기";
-        String menu8 = "8. 종료";
-        String menu9 = "9. 관리자 로그인";
+        System.out.printf("%s\n", MenuText.MENU_LINE.getText());
+        System.out.printf("        %s\n", MenuText.WELCOME_MENT1.getText());
+        System.out.printf("        %s\n", MenuText.WELCOME_MENT2.getText());
+        System.out.printf("%s\n", MenuText.MENU_LINE.getText());
+        System.out.printf(" %-15s\t%-15s \n", MenuText.MENU1.getText(), MenuText.MENU4.getText());
+        System.out.printf(" %-15s\t%-15s \n", MenuText.MENU2.getText(), MenuText.MENU5.getText());
+        System.out.printf(" %-15s\t%-15s \n", MenuText.MENU3.getText(), MenuText.MENU6.getText());
+        System.out.printf(" %-15s\t%-15s \n", MenuText.MENU7.getText(), MenuText.MENU8.getText());
+        System.out.printf(" %-15s \n", MenuText.MENU9.getText());
+        System.out.printf("%s\n", MenuText.MENU_LINE.getText());
+    }
 
-        System.out.printf("%s\n", divLine);
-        System.out.printf("        %s\n", welcomeMent1);
-        System.out.printf("        %s\n", welcomeMent2);
-        System.out.printf("%s\n", divLine);
-        System.out.printf(" %-20s\t%s \n", menu1, menu4);
-        System.out.printf(" %s \t%s \n", menu2, menu5);
-        System.out.printf(" %-20s\t%s \n", menu3, menu6);
-        System.out.printf(" %-20s\t%s \n", menu7, menu8);
-        System.out.printf(" %-20s \n", menu9);
-        System.out.printf("%s\n", divLine);
+    public void run(){
+
     }
 
     //operation 함수
@@ -107,14 +95,14 @@ public class MenuOperation {
 
     // 장바구니 목록 출력 함수
     public void menuCartItemList(Cart cart) throws CartException{
-        if(cart.mCartCount == 0) throw new CartException("장바구니에 항목이없습니다.");
+        if(cart.mCartItem.size() == 0) throw new CartException("장바구니에 항목이없습니다.");
         cart.printCart();
     }
 
     // 장바구니 비우기 함수
     public void menuCartClear(Cart cart) throws CartException, WrongInputException {
         // 장바구니에 항목이 없을 경우 예외 던지기
-        if(cart.mCartCount == 0) throw new CartException("장바구니에 항목이 없습니다.");
+        if(cart.mCartItem.size() == 0) throw new CartException("장바구니에 항목이 없습니다.");
 
         //2차 확인
         System.out.println("장바구니의 모든 항목을 삭제하겠습니까? Y | N ");
@@ -137,6 +125,7 @@ public class MenuOperation {
     //장바구니에 상품 담기 함수
     public void menuCartAddItem(Cart cart) throws WrongInputException{
         //책 리스트 출력
+        bookList();
         cart.printBookList(mBookList);
         boolean loop = true;
 
@@ -180,7 +169,7 @@ public class MenuOperation {
     }
 
     public void menuCartRemoveItem(Cart cart) throws CartException, WrongInputException{
-        if(cart.mCartCount == 0) throw new CartException("장바구니에 항목이 없습니다.");
+        if(cart.mCartItem.size() == 0) throw new CartException("장바구니에 항목이 없습니다.");
         else{
             cart.printCart();
             boolean flag = true;
@@ -217,7 +206,7 @@ public class MenuOperation {
     }
 
     public void menuCartBill(User user, Cart cart) throws CartException{
-        if(cart.mCartCount == 0) throw new CartException("장바구니에 항목이 없습니다.");
+        if(cart.mCartItem.size() == 0) throw new CartException("장바구니에 항목이 없습니다.");
         else {
             System.out.println("배송받을 분은 고객 정보와 같습니까? Y | N ");
             String str = sc.nextLine();
@@ -249,7 +238,7 @@ public class MenuOperation {
         cart.printCart();
 
         int sum = 0;
-        for(int i = 0; i < cart.mCartCount ; i++){
+        for(int i = 0; i < cart.mCartItem.size() ; i++){
             sum += cart.mCartItem.get(i).getTotalPrice();
         }
 
@@ -314,29 +303,26 @@ public class MenuOperation {
         }
     }
 
-    public void bookList(ArrayList<Book> booklist){
-        //도서 정보 저장
-        setFiletoBookList(booklist);
+    public void bookList(){
+        setFiletoBookList();
     }
 
-    public void setFiletoBookList(ArrayList<Book> booklist) {
+    public void setFiletoBookList() {
         try(FileReader fr = new FileReader("C:/study/java_basic/src/BookMarketProject/com/market/BookMarket/book.txt"); BufferedReader br = new BufferedReader(fr)) {
+            String line;
 
-            String str;
-            String[] readBook = new String[7];
+            while ((line = br.readLine()) != null) {
+                if(line.contains("ISBN")){
+                    String isbn = line;
+                    String title = br.readLine();
+                    int price = Integer.parseInt(br.readLine());
+                    String author = br.readLine();
+                    String description = br.readLine();
+                    String category = br.readLine();
+                    String releaseDate = br.readLine();
 
-            while ((str = br.readLine()) != null) {
-                if(str.contains("ISBN")){
-                    readBook[0] = str;
-                    readBook[1] = br.readLine();
-                    readBook[2] = br.readLine();
-                    readBook[3] = br.readLine();
-                    readBook[4] = br.readLine();
-                    readBook[5] = br.readLine();
-                    readBook[6] = br.readLine();
+                    mBookList.add(new Book(isbn, title, price, author, description, category, releaseDate));
                 }
-                booklist.add(new Book(readBook[0],readBook[1], Integer.parseInt(readBook[2]),
-                        readBook[3], readBook[4], readBook[5], readBook[6]));
             }
         } catch(IOException e){
             System.out.println(e);
