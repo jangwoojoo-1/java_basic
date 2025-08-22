@@ -1,6 +1,7 @@
 package BookMarketProject.com.market.operation;
 
 import BookMarketProject.com.market.cart.CartItem;
+import BookMarketProject.com.market.common.ErrorCode;
 import BookMarketProject.com.market.common.MenuText;
 import BookMarketProject.com.market.common.ValidCheck;
 import BookMarketProject.com.market.exception.CartException;
@@ -41,10 +42,9 @@ public class MenuOperation {
                 validCheck.isMenuValid(menuNum);
 
                 menuOp(menuNum);
-            } catch (Exception e) {
-                System.out.println("올바르지 않은 메뉴 선택입니다.");
+            } catch (WrongInputException e) {
+                System.out.println(e.getMessage());
             }
-
         }
     }
 
@@ -64,7 +64,7 @@ public class MenuOperation {
 
     //operation 함수
     public void menuOp(String menuNum) {
-        try { //각 함수에서 던지는 exception 처리
+        try {
             switch (menuNum) {
                 case "1" -> menuGustInfo(mUser);
                 case "2" -> menuCartItemList();
@@ -76,7 +76,9 @@ public class MenuOperation {
                 case "8" -> menuExit();
                 case "9" -> menuAdminLogin();
             }
-        } catch (Exception e) {
+        } catch (CartException e) {
+            System.out.println(e.getMessage());
+        } catch (WrongInputException e) {
             System.out.println(e.getMessage());
         }
 
@@ -89,15 +91,15 @@ public class MenuOperation {
 
 
     public void menuCartItemList() throws CartException {
-        if (cart.mCartItem.isEmpty()) throw new CartException("장바구니에 항목이 없습니다.");
+        isCartEmpty();
         cart.printCart();
     }
 
 
     public void menuCartClear() throws CartException, WrongInputException {
-        if (cart.mCartItem.isEmpty()) throw new CartException("장바구니에 항목이 없습니다.");
+        isCartEmpty();
 
-        String str = prompt(MenuText.CART_CLEAR.getText());
+        String str = prompt2(MenuText.CART_CLEAR.getText());
 
         validCheck.isOptionValid(str);
         switch (str) {
@@ -116,7 +118,7 @@ public class MenuOperation {
         cart.printBookList(mBookList);
 
         while (true) {
-            String str = prompt(MenuText.CART_ADD_ID.getText());
+            String str = prompt2(MenuText.CART_ADD_ID.getText());
 
             //람다식을 활용한 도서리스트에서 도서 찾기
             //있으면 book 객체 반환, 없으면 null 반환
@@ -124,7 +126,7 @@ public class MenuOperation {
 
             //도서가 있으면
             if (findBook != null) {
-                String str1 = prompt(MenuText.CART_ADD.getText());
+                String str1 = prompt2(MenuText.CART_ADD.getText());
 
                 validCheck.isOptionValid(str1);
                 switch (str1) {
@@ -136,7 +138,7 @@ public class MenuOperation {
                 }
                 break;
             } else {
-                throw new WrongInputException("잘못된 입력입니다.");
+                throw new WrongInputException(ErrorCode.NO_BOOK.getText());
             }
         }
     }
@@ -147,16 +149,16 @@ public class MenuOperation {
 
 
     public void menuCartRemoveItem() throws CartException, WrongInputException {
-        if (cart.mCartItem.isEmpty()) throw new CartException("장바구니에 항목이 없습니다.");
+        isCartEmpty();
 
         cart.printCart();
         while (true) {
-            String str = prompt(MenuText.CART_DELETE_ID.getText());
+            String str = prompt2(MenuText.CART_DELETE_ID.getText());
 
             int index = cart.mCartItem.indexOf(cart.mCartItem.stream().filter(item -> item.getBookID().equals(str)).findFirst().orElse(null));
 
             if (index != -1) {
-                String str1 = prompt(MenuText.CART_DELETE.getText());
+                String str1 = prompt2(MenuText.CART_DELETE.getText());
 
                 validCheck.isOptionValid(str1);
                 switch (str1) {
@@ -168,28 +170,26 @@ public class MenuOperation {
                 }
                 break;
             } else {
-                throw new WrongInputException("잘못된 입력입니다.");
+                throw new WrongInputException(ErrorCode.NO_BOOK.getText());
             }
         }
     }
 
 
     public void menuCartBill() throws CartException, WrongInputException {
-        if (cart.mCartItem.isEmpty()) throw new CartException("장바구니에 항목이 없습니다.");
-
-        System.out.println(MenuText.USER_CHECK.getText());
-        String str = sc.nextLine();
+        isCartEmpty();
+        String str = prompt2(MenuText.USER_CHECK.getText());
 
         validCheck.isOptionValid(str);
         switch (str) {
             case "Y" -> {
-                String address = prompt(MenuText.ADDRESS_INPUT.getText());
+                String address = prompt2(MenuText.ADDRESS_INPUT.getText());
                 printBill(mUser.getUserName(), mUser.getUserMobile(), address);
             }
             case "N" -> {
-                String name = prompt(MenuText.NAME_INPUT.getText());
-                String phone = prompt(MenuText.PHONE_INPUT.getText());
-                String address = prompt(MenuText.ADDRESS_INPUT.getText());
+                String name = prompt2(MenuText.NAME_INPUT.getText());
+                String phone = prompt2(MenuText.PHONE_INPUT.getText());
+                String address = prompt2(MenuText.ADDRESS_INPUT.getText());
                 printBill(name, phone, address);
             }
         }
@@ -202,17 +202,17 @@ public class MenuOperation {
         System.out.println(MenuText.USER_LINE.getText());
         System.out.printf("%s%s%s%s \n", MenuText.NAME.getText(), name, MenuText.PHONE.getText(), phone);
         System.out.printf("%s%s%s%s \n", MenuText.ADDRESS.getText(), address, MenuText.SEND_DATE.getText(), strDate);
-        System.out.printf(MenuText.MENU_LINE.getText());
+        System.out.println();
+
         cart.printCart();
 
         System.out.printf("%30s%d%s \n", MenuText.CART_TOTAL_PRICE.getText(), cart.mCartItem.stream().mapToInt(CartItem::getTotalPrice).sum(), MenuText.WON.getText());
-        System.out.println(MenuText.MENU_LINE.getText());
         System.out.println();
     }
 
     public void menuExit() {
         System.out.println(MenuText.EXIT.getText());
-        System.exit(0);
+        loop = false;
     }
 
     public void menuAdminLogin() throws WrongInputException {
@@ -222,9 +222,7 @@ public class MenuOperation {
 
         Admin admin = new Admin(mUser.getUserName(), mUser.getUserMobile());
         if (adminId.equals(admin.getId()) && adminPW.equals(admin.getPassword())) {
-            String[] writeBook = new String[7];
-            System.out.println("도서 정보를 추가하겠습니까? Y | N ");
-            String str = sc.next();
+            String str = prompt2(MenuText.ADMIN_ADD.getText());
 
             validCheck.isOptionValid(str);
             switch (str) {
@@ -232,7 +230,7 @@ public class MenuOperation {
                 case "N" -> showAdminInfo(admin);
             }
         } else {
-            System.out.println("관리자 정보가 일치하지 않습니다.");
+            throw new WrongInputException(ErrorCode.ADMIN_WRONG.getText());
         }
     }
 
@@ -266,7 +264,13 @@ public class MenuOperation {
     }
 
     private String prompt(String message) {
+        System.out.print(message);
+        return sc.nextLine();
+    }
+
+    private String prompt2(String message) {
         System.out.println(message);
+        System.out.print(" : ");
         return sc.nextLine();
     }
 
@@ -276,8 +280,9 @@ public class MenuOperation {
 
     public void setFileToBookList() {
         try (FileReader fr = new FileReader("C:/study/java_basic/src/BookMarketProject/com/market/BookMarket/book.txt"); BufferedReader br = new BufferedReader(fr)) {
-            String line;
+            mBookList.clear();
 
+            String line;
             while ((line = br.readLine()) != null) {
                 if (line.contains("ISBN")) {
                     String isbn = line;
@@ -296,6 +301,10 @@ public class MenuOperation {
         } catch (NumberFormatException e) {
             System.out.println(e);
         }
+    }
+
+    public void isCartEmpty() throws CartException {
+        if (cart.mCartItem.isEmpty()) throw new CartException(ErrorCode.EMPTY_CART.getText());
     }
 
 }

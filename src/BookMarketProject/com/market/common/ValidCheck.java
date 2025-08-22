@@ -8,13 +8,13 @@ public class ValidCheck {
 
     public void isMenuValid(String menuNum) throws WrongInputException {
         if(!(menuNum.matches(MENU_NUM))){
-            throw new WrongInputException("잘못된 입력입니다.");
+            throw new WrongInputException(ErrorCode.WRONG_MENU_CHOICE.getText());
         }
     }
 
     public void isOptionValid(String option) throws WrongInputException {
         if(!(option.matches(MENU_YN))){
-            throw new WrongInputException("잘못된 입력입니다.");
+            throw new WrongInputException(ErrorCode.WRONG_INPUT.getText());
         }
     }
 }

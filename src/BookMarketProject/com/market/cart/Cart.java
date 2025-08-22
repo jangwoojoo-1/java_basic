@@ -50,6 +50,6 @@ public class Cart implements CartInterface{
         mCartItem.stream().forEach(cart -> {
             System.out.printf("%-15s | %-10d | %-10d \n", cart.getBookID(), cart.getQuantity(), cart.getTotalPrice());
         });
-        System.out.println(MenuText.MENU_LINE.getText());
+//        System.out.println(MenuText.MENU_LINE.getText());
     }
 }
