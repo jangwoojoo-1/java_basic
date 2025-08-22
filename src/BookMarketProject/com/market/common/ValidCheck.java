@@ -12,7 +12,7 @@ public class ValidCheck {
         }
     }
 
-    public void isDeleteOptionMenuValid(String option) throws WrongInputException {
+    public void isOptionValid(String option) throws WrongInputException {
         if(!(option.matches(MENU_YN))){
             throw new WrongInputException("잘못된 입력입니다.");
         }
