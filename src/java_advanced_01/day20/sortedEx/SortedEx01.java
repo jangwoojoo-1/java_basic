@@ -75,8 +75,8 @@ public class SortedEx01 {
                 .mapToInt(number -> number)
                 .sum());
 
-        IntStream intStream = (IntStream) numbers.stream();
-        //intStream.filter(number -> number%2==0).collect(Collectors.toList());
-
+//        IntStream intStream = (IntStream) numbers.stream();
+//        int[] filteredNumber2 = intStream.filter(number -> number%2==0).toArray();
+//        System.out.println(filteredNumber2);
     }
 }
