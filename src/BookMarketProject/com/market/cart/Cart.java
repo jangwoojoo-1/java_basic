@@ -4,6 +4,7 @@ import BookMarketProject.com.market.bookitem.Book;
 import BookMarketProject.com.market.common.MenuText;
 
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
 public class Cart implements CartInterface{
     public ArrayList<CartItem> mCartItem = new ArrayList<>();
@@ -25,7 +26,7 @@ public class Cart implements CartInterface{
 
     @Override
     public boolean isCartInBook(String id) {//이미 장바구니 안에 책 있을 때 수량 플러스
-        return mCartItem.stream().filter(item -> item.getBookID().equals(id)).findFirst().map(item -> {item.setQuantity(item.getQuantity() + 1);return true;}).orElse(false);
+        return mCartItem.stream().filter(item -> item.getBookID().equals(id)).findFirst().map(item -> {item.setQuantity(item.getQuantity() + 1);item.updateTotalPrice();return true;}).orElse(false);
     }
 
     @Override
@@ -52,4 +53,11 @@ public class Cart implements CartInterface{
         });
 //        System.out.println(MenuText.MENU_LINE.getText());
     }
+
+    public void changeBookCount(int index, int count) {//이미 장바구니 안에 책 있을 때 수량 플러스
+        CartItem item = mCartItem.get(index);
+        item.setQuantity(count);
+        item.updateTotalPrice();
+    }
+
 }

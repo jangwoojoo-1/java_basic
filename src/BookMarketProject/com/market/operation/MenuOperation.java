@@ -80,6 +80,8 @@ public class MenuOperation {
             System.out.println(e.getMessage());
         } catch (WrongInputException e) {
             System.out.println(e.getMessage());
+        } catch (NumberFormatException e){
+            System.out.println(ErrorCode.NOT_NUMBER.getText());
         }
 
     }
@@ -143,8 +145,32 @@ public class MenuOperation {
         }
     }
 
-    public void menuCartRemoveItemCount() {
-        System.out.println("5. 장바구니의 항목 수량 줄이기");
+    public void menuCartRemoveItemCount() throws CartException, WrongInputException, NumberFormatException {
+        isCartEmpty();
+        cart.printCart();
+
+        while (true) {
+            String str = prompt2(MenuText.CART_COUNT_ID.getText());
+            int index = cart.mCartItem.indexOf(cart.mCartItem.stream().filter(item -> item.getBookID().equals(str)).findFirst().orElse(null));
+
+            if (index != -1) {
+                String str1 = prompt2(MenuText.CART_COUNT.getText());
+                validCheck.isOptionValid(str1);
+                System.out.println(MenuText.MENU_LINE.getText());
+                switch (str1) {
+                    case "Y" -> {
+                        int n = Integer.parseInt(prompt(MenuText.COUNT.getText()));
+                        cart.changeBookCount(index, n);
+                        System.out.println(MenuText.CART_COUNT_MSG.getText());
+                    }
+                    case "N" -> System.out.println(MenuText.CANCEL_MSG.getText());
+                }
+                break;
+            } else {
+                throw new WrongInputException(ErrorCode.NO_BOOK.getText());
+            }
+        }
+
     }
 
 

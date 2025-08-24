@@ -56,9 +56,11 @@ public enum MenuText {
     ADMIN_ADD_CONTENT("설명 : "),
     ADMIN_ADD_CATEGORY("분야 : "),
     ADMIN_ADD_RELDATE("출판일 : "),
-    ADMIN_ADD_MSG("새 도서 정보가 저장되었습니다.");
-
-
+    ADMIN_ADD_MSG("새 도서 정보가 저장되었습니다."),
+    CART_COUNT_ID("장바구니에서 수량을 변경할 도서의 ID를 입력하세요."),
+    COUNT("변경 수량 : "),
+    CART_COUNT("장바구니 항목의 수량을 변경하겠습니까? Y | N"),
+    CART_COUNT_MSG("장바구니 항목의 수량이 변경되었습니다.");
 
     private final String text;
 
