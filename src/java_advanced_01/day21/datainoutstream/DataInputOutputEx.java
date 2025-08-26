@@ -27,11 +27,11 @@ public class DataInputOutputEx {
         dis = new DataInputStream(fis);
 
 //        for(int i = 0 ; i < 4 ; i++){
-            String name = dis.readUTF();
-            int age = dis.readInt();
-            double price = dis.readDouble();
-            boolean flag = dis.readBoolean();
-            System.out.println(name + " " + age + " " + price + " " + flag);
+        String name = dis.readUTF();
+        int age = dis.readInt();
+        double price = dis.readDouble();
+        boolean flag = dis.readBoolean();
+        System.out.println(name + " " + age + " " + price + " " + flag);
 
 //        }
 
