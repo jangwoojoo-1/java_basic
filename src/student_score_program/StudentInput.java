@@ -10,20 +10,7 @@ public class StudentInput {
     File file = new File(fileName);
     Map<String, Student> studentInfo = new HashMap<>();
 
-    public StudentInput() {
-        InnerClass innerClass = new InnerClass();
-        innerClass.run();
-    }
-
-
-
     class InnerClass {
-        private void run() {
-            loadCheck();
-            printUsage();
-            inputInfo();
-        }
-
         private void loadCheck(){
             if(!file.exists()){
                 file.mkdir();
@@ -96,6 +83,13 @@ public class StudentInput {
                 e.printStackTrace();
             }
         }
+    }
 
+    public void run(){
+        InnerClass innerClass = new InnerClass();
+        innerClass.loadCheck();
+        innerClass.printUsage();
+        innerClass.inputInfo();
+        innerClass.saveData();
     }
 }

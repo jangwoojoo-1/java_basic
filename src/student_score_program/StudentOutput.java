@@ -1,9 +1,9 @@
 package student_score_program;
 
-import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class StudentOutput {
     private Map<String, Student> studentInfo;
@@ -29,31 +29,14 @@ public class StudentOutput {
             names = new String[studentInfo.size()];
             int index = 0;
 
-//            while (!keys.isEmpty()) {
-//                String minKey = null;
-//                double minAvg = Double.MAX_VALUE;
-//
-//                for (String key : keys) {
-//                    double avg = studentInfo.get(key).getAverage();
-//                    if (avg < minAvg) {
-//                        minAvg = avg;
-//                        minKey = key;
-//                    }
-//                }
-//
-//                if (minKey != null) {
-//                    datas.add(studentInfo.get(minKey));
-//                    names[index++] = minKey;
-//                    keys.remove(minKey);
-//                }
-//            }
             try {
                 while(true){
-                    Optional<Student> student = keys.stream()
+                    Student student = keys.stream()
                             .map(key -> studentInfo.get(key))
-                            .max(Comparator.comparingDouble(s -> s.getAverage()));
-//                    datas.add(student);
-//                    studentInfo.remove(student.getName());
+                            .max(Comparator.comparingDouble(Student::getAverage)).get();
+                    datas.add(student);
+                    names[index++] = student.getName();
+                    studentInfo.remove(student.getName());
                 }
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -62,7 +45,14 @@ public class StudentOutput {
         }
 
         private void printInfo(){
-
+            System.out.println("[평균 오름차순 성적표]");
+            AtomicInteger i = new AtomicInteger(1);
+            Arrays.stream(names).forEach(name ->{
+                Student student = studentInfo.get(name);
+                System.out.println((i.getAndIncrement()) + ") " + name);
+                System.out.println("점수: " + student.getRecord().toString());
+                System.out.println("총점: " + student.getTotal() + ", 평균: " + student.getAverage() + ", 학점: " + student.getGrade());
+            });
         }
     }
 
