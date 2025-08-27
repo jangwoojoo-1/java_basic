@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -17,6 +18,11 @@ public class Student implements Serializable {
     private int total;
     private float average;
     private String grade;
+
+    public Student(String name){
+        this.name = name;
+        record = new ArrayList<>();
+    }
 
     @Override
     public String toString() {

@@ -1,28 +1,33 @@
 package student_score_program;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class StudentInput {
+    String fileName = "C:/Temp/student.dat";
     // 자료구조 객체 생성
-    File file = new File("C:/Temp/student.dat");
+    File file = new File(fileName);
     Map<String, Student> studentInfo = new HashMap<>();
 
     public StudentInput() {
         InnerClass innerClass = new InnerClass();
+        innerClass.run();
     }
 
-//    public void inputStudent(){
-//        BufferedReader br = new BufferedReader(Files.newInputStream(System.in));
-//    }
+
 
     class InnerClass {
+        private void run() {
+            loadCheck();
+            printUsage();
+            inputInfo();
+        }
+
         private void loadCheck(){
             if(!file.exists()){
                 file.mkdir();
+                saveData();
             }
         }
 
@@ -30,6 +35,31 @@ public class StudentInput {
             System.out.println("[학생 성적 입력 프로그램");
             System.out.println("- 종료하려면 이름에 ^^ 를 입력하세요.");
             System.out.println("- 점수는 0~100 사이의 정수만 허용됩니다. \n");
+        }
+
+        private void inputInfo() {
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))){
+                while (true){
+                    System.out.print("이름 : ");
+                    String name = br.readLine();
+                    if(name.equals("^^")) {exit(); break;}
+                    Student student = new Student(name);
+
+                    student.getRecord().add(Integer.parseInt(br.readLine()));
+                    student.getRecord().add(Integer.parseInt(br.readLine()));
+                    student.getRecord().add(Integer.parseInt(br.readLine()));
+                    student.getRecord().add(Integer.parseInt(br.readLine()));
+                    checkKeyAndInputData(student);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private void exit(){
+            System.out.println("exit");
+            System.out.println("입력을 종료합니다.");
+            System.out.println("[완료] " + studentInfo.size() + "명의 정보가 " + fileName + " 에 저장되었습니다.");
         }
 
         private void checkKeyAndInputData(Student student) {
@@ -47,6 +77,8 @@ public class StudentInput {
                     if(student.getTotal() >= 60) student.setGrade("D");
                     if(student.getTotal() < 60) student.setGrade("F");
                     studentInfo.put(student.getName(), student);
+                    System.out.printf("=> 저장됨: %s (총점=%d, 평균=%.1f, 학점=%s) \n",
+                            student.getName(), student.getTotal(), student.getAverage(), student.getGrade());
                 } else{
                     System.out.println("점수 입력이 잘못되었습니다.");
                 }

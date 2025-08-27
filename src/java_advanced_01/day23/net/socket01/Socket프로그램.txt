@@ -1,0 +1,33 @@
+TCP 서버 프로그램을 개발하려면 우선 ServerSocket 객체를 생성해야 함
+ServerSocket은 Port를 가져야 함, 50001번이라고 맘대로 지정
+serverSocket이 생성되었다면 연결 요청 수락을 위해서 accept() 메서드를 실행해야 함
+    accept() 메서드는 클라이언트가 연결요청하기 전까지 블로킹된다.
+    블로킹이란 실행을 멈춘 상태가 된다는 뜻
+    클라이언트의 연결 요청이 들어오면 블로킹이 해제되고 통신용 Socket을 리턴한다.
+
+TCP 서버 프로그램 개발 순서
+1. ServerSocket 객체 생성(Port를 가져야 함)
+2. accept() 메서드 구현
+
+    1번 예시
+        ServerSocket server = new ServerSocket(50001);
+
+        포트 변경 가능 방식
+        ServerSocket server = new ServerSocket();
+        server.bind(new InetSocketAddress(50001));
+
+    2번 예시
+        Socket socket = server.accept();
+
+
+클라이언트가 서버에서 연결 요청을 하려면
+Socket 객체를 생성하고 생성자 매개값에 서버 IP, Port(필수값) 제공한다.
+
+
+TCP 클라이언트 개발 순서
+1. Socket 객체 생성(매개값 - IP, Port)
+2.
+
+
+1번 예시
+    Socket socket = new Socket("IP", 50001);
