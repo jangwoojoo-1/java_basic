@@ -21,20 +21,24 @@ public class StudentInput {
         private void printUsage() {
             System.out.println("[학생 성적 입력 프로그램");
             System.out.println("- 종료하려면 이름에 ^^ 를 입력하세요.");
-            System.out.println("- 점수는 0~100 사이의 정수만 허용됩니다. \n");
+            System.out.println("- 점수는 0~100 사이의 정수만 허용됩니다.");
         }
 
         private void inputInfo() {
             try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))){
                 while (true){
-                    System.out.print("이름 : ");
+                    System.out.print("\n이름 : ");
                     String name = br.readLine();
                     if(name.equals("^^")) {exit(); break;}
                     Student student = new Student(name);
 
+                    System.out.print("국어: ");
                     student.getRecord().add(Integer.parseInt(br.readLine()));
+                    System.out.print("영어: ");
                     student.getRecord().add(Integer.parseInt(br.readLine()));
+                    System.out.print("수학: ");
                     student.getRecord().add(Integer.parseInt(br.readLine()));
+                    System.out.print("과학: ");
                     student.getRecord().add(Integer.parseInt(br.readLine()));
                     checkKeyAndInputData(student);
                 }
@@ -55,14 +59,15 @@ public class StudentInput {
                 System.out.println("[오류] 이미 존재하는 이름입니다. 다른 이름을 입력하세요.");
             } else {
                 if(student.getRecord().stream()
-                        .allMatch(s -> Integer.toString(s).matches("^[1-100]*"))) {
+                        .allMatch(s -> s >= 0 && s <= 100)) {
                     student.setTotal(student.getRecord().stream().mapToInt(s -> Integer.valueOf(s)).sum());
                     student.setAverage((float)student.getRecord().stream().mapToInt(s->Integer.valueOf(s)).average().getAsDouble());
-                    if(student.getTotal() >= 90) student.setGrade("A");
-                    if(student.getTotal() >= 80) student.setGrade("B");
-                    if(student.getTotal() >= 70) student.setGrade("C");
-                    if(student.getTotal() >= 60) student.setGrade("D");
-                    if(student.getTotal() < 60) student.setGrade("F");
+                    if(student.getAverage() >= 90) student.setGrade("A");
+                    else if(student.getAverage() >= 80) student.setGrade("B");
+                    else if(student.getAverage() >= 70) student.setGrade("C");
+                    else if(student.getAverage() >= 60) student.setGrade("D");
+                    else if(student.getAverage() < 60) student.setGrade("F");
+
                     studentInfo.put(student.getName(), student);
                     System.out.printf("=> 저장됨: %s (총점=%d, 평균=%.1f, 학점=%s) \n",
                             student.getName(), student.getTotal(), student.getAverage(), student.getGrade());

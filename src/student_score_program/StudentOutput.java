@@ -14,8 +14,9 @@ public class StudentOutput {
         private void loadObjectFromFile(){
             try(ObjectInputStream ois = new ObjectInputStream(
                     new FileInputStream("C:/Temp/student.dat"))){
-                if(ois.readObject() instanceof HashMap) {
-                    studentInfo = (HashMap<String, Student>) ois.readObject();
+                Object obj = ois.readObject();
+                if(obj instanceof HashMap) {
+                    studentInfo = (HashMap<String, Student>) obj;
                 } else {
                     System.out.println("타입 오류 발생");
                 }
